@@ -13,10 +13,23 @@ namespace WebShop2018
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // Ukljucimo rutiranje preko atributa
+            routes.MapMvcAttributeRoutes();
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "WebProgramiranje",
+                url: "route/test/{year}/{category}",
+                defaults: new { controller = "Home",
+                    action = "RouteTest",
+                    year = UrlParameter.Optional,
+                    category = UrlParameter.Optional
+                }
             );
         }
     }

@@ -1,0 +1,50 @@
+﻿@model WebShop2018.Models.Proizvod
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    @Html.HiddenFor(model => model.Id)
+
+    @Html.LabelFor(model => model.Naziv)
+    @Html.TextBoxFor(model => model.Naziv)
+
+    <br />
+
+    @Html.LabelFor(model => model.Cena)
+    @Html.EditorFor(model => model.Cena)
+
+    <br />
+
+    <label>Kategorija</label>
+
+    @Html.DropDownListFor(m => m.Kategorija.Id, new SelectList(ViewBag.Kategorije, "Id", "Naziv"))
+
+    @*@Html.DropDownListFor(m => m.Kategorija, new SelectList(ViewBag.Kategorije, "Value", "Text"))*@
+
+    <br />
+
+    <label>Stanje</label>
+    @Html.EnumDropDownListFor(m => m.Stanje)
+
+    @*<label>Akcija</label>
+    @Html.RadioButtonFor(model => model.Stanje, "Akcija")
+    <label>NaStanju</label>
+    @Html.RadioButtonFor(model => model.Stanje, "NaStanju")
+    <label>Rasprodato</label>
+    @Html.RadioButtonFor(model => model.Stanje, "Rasprodato")*@
+
+    <br />
+    <input type="submit" value="Save" />
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

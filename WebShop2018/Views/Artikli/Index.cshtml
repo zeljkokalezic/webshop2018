@@ -1,0 +1,97 @@
+﻿@using WebShop2018.Models
+@model WebShop2018.Models.ArtikliGridViewModel
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>Ukupno proizvoda: @Model.Count</h2>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Ime sadrzi: @Html.TextBox("query")
+        Cena do: @Html.TextBox("maxPrice")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+@if (User.IsInRole(RolesConfig.ADMIN))
+{
+    @Html.ActionLink("Create New", "Create")
+}
+
+Narucili ste @ViewBag.OrderLineCount artikla
+<br />
+Total: @ViewBag.OrderPrice
+
+
+<table class="table">
+    <tr>
+        <th>
+            Slika
+        </th>
+        <th>
+            @Html.ActionLink("Naziv", "Index", Model.GetSortingParameters("Naziv"))
+        </th>
+        <th>
+            @Html.ActionLink("Cena", "Index", Model.GetSortingParameters("Cena"))
+        </th>
+        <th>
+            @Html.ActionLink("Stanje", "Index", Model.GetSortingParameters("Stanje"))
+        </th>
+        <th>
+            @Html.ActionLink("Kategorija", "Index", Model.GetSortingParameters("Kategorija.Naziv"))
+        </th>
+        <th>
+            Akcije
+        </th>
+    </tr>
+@foreach (var proizvod in Model.Artikli)
+{
+    <tr>
+        <td>
+            <img src="@string.Format("/Content/Artikli/{0}", proizvod.ImeSlikeZaPrikaz)" style="width:100px;">
+        </td>
+        <td>
+            @proizvod.Naziv
+        </td>
+        <td>
+            @proizvod.Cena
+        </td>
+        <td>
+            @proizvod.Stanje
+        </td>
+        <td>
+            @Html.DisplayFor(p => proizvod.Kategorija.Naziv)
+        </td>
+        <td>
+            @if (Request.IsAuthenticated && User.IsInRole(RolesConfig.ADMIN))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = proizvod.Id }, new { @class = "" })
+                @Html.Raw("<br/>")
+                @Html.ActionLink("Delete", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme" })
+            }
+            @if (User.IsInRole(RolesConfig.USER))
+            {
+                @Html.ActionLink("Dodaj u korpu", "AddToCart", new { id = proizvod.Id }, new { @class = "" })
+            }
+        </td>
+    </tr>
+}
+</table>
+
+@for (int i = 1; i <= Model.TotalPages; i++)
+{
+    @Html.ActionLink(i.ToString(), "Index", Model.GetPagingParameters(i))
+    @Html.Raw("|")
+}
+
+@section Scripts{
+    <script>
+        // jQuery
+        $('.delete-dugme').on('click', function () {
+            return confirm("Are you sure?");
+        });
+    </script>
+}

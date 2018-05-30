@@ -26,6 +26,10 @@ namespace WebShop2018
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/theme").Include(
+                      "~/Content/bootstrap-theme.css",
+                      "~/Content/site.css"));
         }
     }
 }

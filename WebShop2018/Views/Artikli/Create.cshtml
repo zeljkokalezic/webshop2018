@@ -1,0 +1,41 @@
+﻿@model WebShop2018.Models.Proizvod
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("Back", "Index")
+
+@*moramo da stavimo encoding za formu da bi poslali slliku (enctype = "multipart/form-data")*@
+@using (Html.BeginForm((string)ViewBag.Title, "Artikli", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.LabelFor(m => m.Naziv)
+    @Html.EditorFor(m => m.Naziv)
+    @Html.ValidationMessageFor(m => m.Naziv)
+
+    <br />
+    @Html.LabelFor(m => m.Cena)
+    @Html.EditorFor(m => m.Cena)
+    @Html.ValidationMessageFor(m => m.Cena)
+
+    <br />
+    @Html.LabelFor(m => m.Stanje)
+    @Html.EnumDropDownListFor(m => m.Stanje)
+    @Html.ValidationMessageFor(m => m.Stanje)
+
+    <br />
+    @Html.LabelFor(m => m.Kategorija)
+    @Html.DropDownListFor(m => m.Kategorija.Id,
+                            new SelectList(ViewBag.Kategorije, "Id", "Naziv")
+                          )
+    @Html.ValidationMessageFor(m => m.Kategorija)
+
+    <br />
+    <label>Slika</label>
+    <input name="slika" type="file"accept=".jpg,.gif,.jpeg,.png"/>
+
+    <br />
+    <input type="submit" value="Save"/>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

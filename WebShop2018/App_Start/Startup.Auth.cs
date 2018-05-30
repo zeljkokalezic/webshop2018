@@ -54,9 +54,9 @@ namespace WebShop2018
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "1258518694250517",
+               appSecret: "e0010044d003f8c72dad905b3cfa136a");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

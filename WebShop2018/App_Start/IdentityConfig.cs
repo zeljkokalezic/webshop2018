@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using WebShop2018.Models;
+using System.Net.Mail;
 
 namespace WebShop2018
 {
@@ -19,7 +20,14 @@ namespace WebShop2018
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            //return Task.FromResult(0);
+
+            return new SmtpClient().SendMailAsync(
+                "zeljkokalezic@gmail.com",
+                message.Destination,
+                message.Subject,
+                message.Body
+            );
         }
     }
 
@@ -53,11 +61,11 @@ namespace WebShop2018
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequiredLength = 3,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
+                RequireLowercase = false,
+                RequireUppercase = false,
             };
 
             // Configure user lockout defaults
