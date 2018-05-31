@@ -1,5 +1,4 @@
-﻿@using WebShop2018.Models
-@model WebShop2018.Models.Order
+﻿@model WebShop2018.Models.Order
 
 @{
     ViewBag.Title = "Details";
@@ -44,19 +43,6 @@
         </dd>
     </dl>
 </div>
-
-@if (User.IsInRole(RolesConfig.USER))
-{
-    using (Html.BeginForm("FinalizeOrder", "Orders", FormMethod.Post))
-    {
-        <p>
-            @Html.Hidden("id", Model.Id)
-            <label>Comment:</label>
-            @Html.EditorFor(m => m.Comment)
-            <input type="submit" value="Naruci" />
-        </p>
-    }
-}
 
 <table class="table">
     <tr>

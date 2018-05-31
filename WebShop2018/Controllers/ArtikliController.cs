@@ -44,22 +44,10 @@ namespace WebShop2018.Controllers
             // vrati podatke iz baze :)
             viewModel.Artikli = proizvodi.ToList();
 
-            //privremeno resenje
             if (User.IsInRole(RolesConfig.USER))
             {
-                var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-                // trazimo otvorenu narudzbenicu
-                var order = db.Orders.FirstOrDefault(o => o.State == OrderState.Open && o.User.Id == currentUser.Id);
-
-                if (order != null && order.OrderLines.Count > 0)
-                {
-                    ViewBag.OrderLineCount = order.OrderLines.Sum(ol => ol.Quantity);
-                    ViewBag.OrderPrice = order.Total;
-                }
-                else
-                {
-                    // TODO
-                }
+                viewModel.Order = db.Orders.FirstOrDefault(o => o.State == OrderState.Open &&
+                    o.User.UserName == User.Identity.Name);
             }
 
 

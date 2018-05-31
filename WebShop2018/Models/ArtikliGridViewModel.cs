@@ -27,6 +27,9 @@ namespace WebShop2018.Models
         // lista proizvoda za grid
         public List<Proizvod> Artikli { get; set; }
 
+        // otvorena narudzbenica za trenutnog korisnika
+        public Order Order { get; set; }
+
         public object GetSortingParameters(string sortBy)
         {
             // default smer sortiranja

@@ -21,9 +21,16 @@
     @Html.ActionLink("Create New", "Create")
 }
 
-@if (User.IsInRole(RolesConfig.USER))
+@if (User.IsInRole(RolesConfig.USER) && Model.Order != null)
 {
-    @Html.Raw($"<b>Narucili ste {ViewBag.OrderLineCount} artikla. Vas total je: {ViewBag.OrderPrice} </b>")
+    @Html.Raw($"<b>Narucili ste {Model.Order.TotalItems} artikla. Vas total je: {Model.Order.Total} </b>")
+    using (Html.BeginForm("Details", "Orders", FormMethod.Get))
+    {
+        <p>
+            @Html.Hidden("id", Model.Order.Id)
+            <input type="submit" value="Naruci" />
+        </p>
+    }
 }
 
 

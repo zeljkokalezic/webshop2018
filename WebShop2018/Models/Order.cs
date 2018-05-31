@@ -12,7 +12,8 @@ namespace WebShop2018.Models
         Open,
         Closed,
         Shipped,
-        Canceled
+        Canceled,
+        Processing
     }
 
     public class Order
@@ -31,6 +32,14 @@ namespace WebShop2018.Models
             get
             {
                 return OrderLines != null ? OrderLines.Sum(ol => ol.Price * ol.Quantity) : 0;
+            }
+        }
+
+        public decimal TotalItems
+        {
+            get
+            {
+                return OrderLines != null ? OrderLines.Sum(ol => ol.Quantity) : 0;
             }
         }
 
