@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebShop2018.Models;
 using System.Linq.Dynamic;
+using System.IO;
 
 namespace WebShop2018.Controllers
 {
@@ -52,8 +53,8 @@ namespace WebShop2018.Controllers
 
                 if (order != null && order.OrderLines.Count > 0)
                 {
-                    ViewBag.OrderLineCount = order.OrderLines.Count;
-                    ViewBag.OrderPrice = order.OrderLines.Sum(ol => ol.Price * ol.Quantity);
+                    ViewBag.OrderLineCount = order.OrderLines.Sum(ol => ol.Quantity);
+                    ViewBag.OrderPrice = order.Total;
                 }
                 else
                 {
@@ -105,7 +106,7 @@ namespace WebShop2018.Controllers
         {
             if (slika != null)
             {
-                proizvod.ImeSlike = slika.FileName;
+                proizvod.ImeSlike = Path.GetFileName(slika.FileName);
 
                 var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvod.ImeSlikeZaPrikaz}");
                 slika.SaveAs(putanjaDoSlike);
@@ -174,9 +175,9 @@ namespace WebShop2018.Controllers
         [Authorize(Roles = RolesConfig.USER)]
         public ActionResult AddToCart(int id)
         {
+            var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
             var item = db.Proizvodi.Find(id);
-            var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-
+            
             // trazimo otvorenu narudzbenicu
             var order = db.Orders.FirstOrDefault(o => o.State == OrderState.Open && o.User.Id == currentUser.Id);
 

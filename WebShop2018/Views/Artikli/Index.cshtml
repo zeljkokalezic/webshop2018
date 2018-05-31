@@ -21,9 +21,11 @@
     @Html.ActionLink("Create New", "Create")
 }
 
-Narucili ste @ViewBag.OrderLineCount artikla
-<br />
-Total: @ViewBag.OrderPrice
+@if (User.IsInRole(RolesConfig.USER))
+{
+    @Html.Raw($"<b>Narucili ste {ViewBag.OrderLineCount} artikla. Vas total je: {ViewBag.OrderPrice} </b>")
+}
+
 
 
 <table class="table">
