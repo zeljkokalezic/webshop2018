@@ -45,7 +45,7 @@
     </dl>
 </div>
 
-@if (User.IsInRole(RolesConfig.USER))
+@if (User.IsInRole(RolesConfig.USER) && Model.State == OrderState.Open)
 {
     using (Html.BeginForm("FinalizeOrder", "Orders", FormMethod.Post))
     {
@@ -53,7 +53,7 @@
             @Html.Hidden("id", Model.Id)
             <label>Comment:</label>
             @Html.EditorFor(m => m.Comment)
-            <input type="submit" value="Naruci" />
+            <input type="submit" value="Naruci" class="btn"/>
         </p>
     }
 }
@@ -89,15 +89,18 @@
                 @Html.DisplayFor(modelItem => orderLine.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => orderLine.Quantity)
+                @using (Html.BeginForm("ChangeQuantity", "Orders", FormMethod.Post))
+                {
+                    <input name="id" type="hidden" value="@orderLine.Id">
+                    <input name="quantity" type="number" value="@orderLine.Quantity" min="1">
+                    <input type="submit" value="Change" class="btn" />
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => orderLine.Total)
             </td>
             <td>
-                @Html.ActionLink("Add Item", "Edit", new { id = orderLine.Id })
-                @Html.ActionLink("Remove Item", "Edit", new { id = orderLine.Id })
-                @Html.ActionLink("Delete", "Edit", new { id = orderLine.Id })
+                @Html.ActionLink("Delete", "DeleteOrderLine", new { id = orderLine.Id })
             </td>
         </tr>
     }
@@ -116,6 +119,10 @@
 </table>
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @if (User.IsInRole(RolesConfig.ADMIN))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+        @Html.Raw("|")
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>

@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using WebShop2018.Models;
+using System.Linq.Dynamic;
 
 namespace WebShop2018.Controllers
 {
@@ -17,22 +19,67 @@ namespace WebShop2018.Controllers
 
         // GET: Orders
         [Authorize(Roles = RolesConfig.ADMIN + "," + RolesConfig.USER)]
-        public ActionResult Index()
+        public ActionResult Index(OrdersGridViewModel viewModel)
         {
-            IEnumerable<Order> orders = null;
+            //RouteValueDictionary test = new RouteValueDictionary(new { Pera = "Detlic"});
+            //ViewBag.Test = new RouteValueDictionary(test.Union(new RouteValueDictionary(new { Mile = "Kitic" })).ToDictionary(k => k.Key, k => k.Value));
+
+            IQueryable<Order> orders = null;
 
             // ako je neko u roli korisnik prikazi samo njegove narudzbine
             if (User.IsInRole(RolesConfig.USER))
             {
                 orders = db.Orders.Where(o => o.User.UserName == User.Identity.Name);
             }
+
             // ako je administrator neka se prikazu sve
             else if (User.IsInRole(RolesConfig.ADMIN))
             {
                 orders = db.Orders;
             }
 
-            return View(orders.ToList());
+            if (viewModel.Query != null)
+            {
+                // daj sve ordere gde korisnicko ime sadrzi ovaj query parametar
+                orders = orders.Where(o => o.User.UserName.Contains(viewModel.Query));
+            }
+            if (viewModel.MaxTotal.HasValue)
+            {
+                // svi proizvodi koji imaju cenu manju od
+                orders = orders.Where(o => o.OrderLines.Sum(ol => ol.Quantity * ol.Price) <= viewModel.MaxTotal);
+            }
+            if (viewModel.SortBy != null && viewModel.SortDirection != null)
+            {
+                // sortiranje koriscenjem Linq.Dynamic
+                if (viewModel.SortBy.ToLower().Equals("total"))
+                {
+                    if (viewModel.SortDirection.ToLower().Equals("asc"))
+                    {
+                        orders = orders.OrderBy(o => o.OrderLines.Sum(ol => ol.Quantity * ol.Price));
+                    }
+                    else
+                    {
+                        orders = orders.OrderByDescending(o => o.OrderLines.Sum(ol => ol.Quantity * ol.Price));
+                    }
+                }
+                else
+                {
+                    orders = orders.OrderBy(string.Format("{0} {1}", viewModel.SortBy, viewModel.SortDirection));
+                }
+                
+            }
+
+            // uzmemo ukupan broj proizvoda iz baze koji zaovoljavaju kriterijume pretrage
+            viewModel.Count = orders.Count();
+
+            // paging
+            orders = orders.Skip((viewModel.Page - 1) * viewModel.PageSize).Take(viewModel.PageSize);
+
+            // vrati podatke iz baze :)
+            viewModel.Orders = orders.ToList();
+
+
+            return View(viewModel);
         }
 
         // GET: Orders/Details/5
@@ -43,25 +90,12 @@ namespace WebShop2018.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Order order = db.Orders.Find(id);
-            if (order == null)
+
+            if (order == null || OrderAcessNotAuthorized(order))
             {
                 return HttpNotFound();
-            }
-
-            if (User.IsInRole(RolesConfig.USER))
-            {
-                // ako trenutno ulogovani korisnik ima order u svojoj listi ordera
-                //var currentUser = db.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-                //var canViewOrder = currentUser.Orders.Any(o => o.Id == order.Id);
-
-                // ako je username trenutno ulogovanog korisnika jednak username-u korsnika cija je narudzbina
-                var viewForbbiden = order.User.UserName != User.Identity.Name;
-
-                if (viewForbbiden)
-                {
-                    return HttpNotFound();
-                }
             }
 
             return View(order);
@@ -197,13 +231,7 @@ namespace WebShop2018.Controllers
         public ActionResult FinalizeOrder(Guid id, string comment)
         {
             Order order = db.Orders.Find(id);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-
-            var forbbidenView = order.User.UserName != User.Identity.Name;
-            if (forbbidenView)
+            if (order == null || OrderAcessNotAuthorized(order) || order.State != OrderState.Open)
             {
                 return HttpNotFound();
             }
@@ -214,6 +242,61 @@ namespace WebShop2018.Controllers
             db.SaveChanges();
 
             return View("ThankYou");
+        }
+
+        public ActionResult DeleteOrderLine(int id)
+        {
+            var orderLine = db.OrderLines.Find(id);
+
+            if (orderLine == null || orderLine.Order == null || OrderAcessNotAuthorized(orderLine.Order))
+            {
+                return HttpNotFound();
+            }
+
+            var orderId = orderLine.Order.Id;
+
+            db.OrderLines.Remove(orderLine);
+            db.SaveChanges();
+
+            return RedirectToAction("Details", new { id = orderId });
+        }
+
+        public ActionResult ChangeQuantity(int id, int quantity)
+        {
+            var orderLine = db.OrderLines.Find(id);
+
+            if (orderLine == null || orderLine.Order == null || OrderAcessNotAuthorized(orderLine.Order))
+            {
+                return HttpNotFound();
+            }
+
+            var orderId = orderLine.Order.Id;
+
+            orderLine.Quantity = quantity;
+
+            // ovde ne dozvoljavamo da se kolicina smanji ispod 1
+            if (orderLine.Quantity >= 1)
+            {
+                db.SaveChanges();
+            }
+
+            //// ovo je logika kada brisemo ako ima manje od 1
+            //if (orderLine.Quantity <= 0)
+            //{
+            //    //// nacin brisanje na licu mesta
+            //    //db.OrderLines.Remove(orderLine);
+            //    //db.SaveChanges();
+
+            //    // nacin redirect na delete akciju
+            //    return RedirectToAction("DeleteOrderLine", new { id = orderLine.Id });
+            //}
+
+            return RedirectToAction("Details", new { id = orderId });
+        }
+
+        private bool OrderAcessNotAuthorized(Order order)
+        {
+            return User.IsInRole(RolesConfig.ADMIN) ? false : order.User.UserName != User.Identity.Name;
         }
 
         protected override void Dispose(bool disposing)

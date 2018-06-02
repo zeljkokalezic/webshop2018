@@ -1,11 +1,22 @@
 ﻿@using WebShop2018.Models
-@model IEnumerable<WebShop2018.Models.Order>
+@model WebShop2018.Models.OrdersGridViewModel
 
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
+
+@*@Html.ActionLink("Test", "Test", (RouteValueDictionary)ViewBag.Test)*@
+
+@using (Html.BeginForm())
+{
+    <p>
+        Username contains: @Html.TextBox("query")
+        Max Total: @Html.TextBox("maxTotal")
+        <input type="submit" value="Search" />
+    </p>
+}
 
 <p>
     @if (User.IsInRole(RolesConfig.ADMIN))
@@ -16,24 +27,24 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.User)
+            @Html.ActionLink("User", "Index", Model.GetSortingParameters("User.Username"))
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Comment)
+            @Html.ActionLink("Comment", "Index", Model.GetSortingParameters("Comment"))
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
+            @Html.ActionLink("Created At", "Index", Model.GetSortingParameters("CreatedAt"))
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.State)
+            @Html.ActionLink("State", "Index", Model.GetSortingParameters("State"))
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Total)
+            @Html.ActionLink("Total", "Index", Model.GetSortingParameters("Total"))
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Orders) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.User.Email)
@@ -69,3 +80,5 @@
 }
 
 </table>
+
+@Html.Partial("_GridPager", Model)

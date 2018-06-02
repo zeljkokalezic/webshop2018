@@ -5,21 +5,18 @@ using System.Web;
 
 namespace WebShop2018.Models
 {
-    public class ArtikliGridViewModel : BaseGridViewModel
+    public class OrdersGridViewModel : BaseGridViewModel
     {
         // za pretragu
         public string Query { get; set; }
-        public int? MaxPrice { get; set; }
+        public int? MaxTotal { get; set; }
 
         // za sortiranje
-        public string SortBy { get; set; } = "Naziv";
+        public string SortBy { get; set; } = "User.Username";
         public string SortDirection { get; set; } = "ASC";
 
         // lista proizvoda za grid
-        public List<Proizvod> Artikli { get; set; }
-
-        // otvorena narudzbenica za trenutnog korisnika
-        public Order Order { get; set; }
+        public List<Order> Orders { get; set; }
 
         public object GetSortingParameters(string sortBy)
         {
@@ -37,7 +34,7 @@ namespace WebShop2018.Models
             {
                 sortBy,
                 SortDirection = direction,
-                MaxPrice,
+                MaxTotal,
                 Query,
                 PageSize,
                 Page
@@ -50,7 +47,7 @@ namespace WebShop2018.Models
             {
                 SortBy,
                 SortDirection,
-                MaxPrice,
+                MaxTotal,
                 Query,
                 PageSize,
                 page

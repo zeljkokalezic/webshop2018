@@ -90,11 +90,7 @@
 }
 </table>
 
-@for (int i = 1; i <= Model.TotalPages; i++)
-{
-    @Html.ActionLink(i.ToString(), "Index", Model.GetPagingParameters(i))
-    @Html.Raw("|")
-}
+@Html.Partial("_GridPager", Model)
 
 @section Scripts{
     <script>

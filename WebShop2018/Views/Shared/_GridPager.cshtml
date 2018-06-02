@@ -1,0 +1,7 @@
+﻿@model WebShop2018.Models.BaseGridViewModel
+
+@for (int i = 1; i <= Model.TotalPages; i++)
+{
+    @Html.ActionLink(i.ToString(), "Index", Model.GetPagingParameters(i), new { @class = "btn btn-primary" })
+    @Html.Raw("|")
+}

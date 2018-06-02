@@ -233,6 +233,8 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\BaseGridViewModel.cs" />
+    <Compile Include="Models\OrdersGridViewModel.cs" />
     <Compile Include="Models\ArtikliGridViewModel.cs" />
     <Compile Include="Models\Dobavljac.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -325,6 +327,7 @@
     <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\Orders\Details.cshtml" />
     <Content Include="Views\Orders\ThankYou.cshtml" />
+    <Content Include="Views\Shared\_GridPager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
