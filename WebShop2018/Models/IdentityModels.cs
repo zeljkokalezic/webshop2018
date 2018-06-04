@@ -30,6 +30,8 @@ namespace WebShop2018.Models
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderLine> OrderLines { get; set; }
 
+        public virtual DbSet<Image> Images { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

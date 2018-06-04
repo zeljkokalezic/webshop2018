@@ -231,11 +231,16 @@
     <Compile Include="Migrations\201805071719503_Nasledjivanje.Designer.cs">
       <DependentUpon>201805071719503_Nasledjivanje.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806040703237_AddImageClass.cs" />
+    <Compile Include="Migrations\201806040703237_AddImageClass.Designer.cs">
+      <DependentUpon>201806040703237_AddImageClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ArtikliGridViewModel.cs" />
     <Compile Include="Models\Dobavljac.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Image.cs" />
     <Compile Include="Models\Kategorija.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Order.cs" />
@@ -358,6 +363,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805071719503_Nasledjivanje.resx">
       <DependentUpon>201805071719503_Nasledjivanje.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806040703237_AddImageClass.resx">
+      <DependentUpon>201806040703237_AddImageClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
