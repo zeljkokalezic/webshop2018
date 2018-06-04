@@ -39,7 +39,8 @@
     </dl>
 </div>
 <p>
+    @Html.ActionLink(" ", "Index", " ", new { @class = "text-warning glyphicon glyphicon-arrow-left btn btn-default btn-sm" })
+    @Html.Raw("&nbsp;")
+    @Html.ActionLink(" ", "Edit", new { id = Model.Id }, new { @class = "text-success glyphicon glyphicon-pencil btn btn-default btn-sm" })
 
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
 </p>
