@@ -159,6 +159,11 @@ namespace WebShop2018.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Categories()
+        {
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

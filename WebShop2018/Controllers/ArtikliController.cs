@@ -149,6 +149,10 @@ namespace WebShop2018.Controllers
         public ActionResult Delete(int id)
         {
             var proizvodIzBaze = db.Proizvodi.Find(id);
+
+            //var orderLinesForDelete = db.OrderLines.Where(ol => ol.Item.Id == proizvodIzBaze.Id);
+            //db.OrderLines.RemoveRange(orderLinesForDelete);
+
             db.Proizvodi.Remove(proizvodIzBaze);
             db.SaveChanges();
 
