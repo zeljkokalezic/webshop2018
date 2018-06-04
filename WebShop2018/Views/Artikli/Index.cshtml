@@ -67,15 +67,16 @@ Total: @ViewBag.OrderPrice
         </td>
         <td>
             @if (Request.IsAuthenticated && User.IsInRole(RolesConfig.ADMIN))
-            {
-                @Html.ActionLink("Edit", "Edit", new { id = proizvod.Id }, new { @class = "" })
-                @Html.Raw("<br/>")
-                @Html.ActionLink("Delete", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme" })
-            }
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = proizvod.Id }, new { @class = "" })
+        @Html.Raw("<br/>")
+        @Html.ActionLink("Delete", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme" })
+}
             @if (User.IsInRole(RolesConfig.USER))
-            {
-                @Html.ActionLink("Dodaj u korpu", "AddToCart", new { id = proizvod.Id }, new { @class = "" })
-            }
+    {
+        @Html.ActionLink("Dodaj u korpu", "AddToCart", new { id = proizvod.Id }, new { @class = "" })
+        @Html.ActionLink(" ", "Details", "Artikli", new { id = proizvod.Id }, new { @class = "text-success glyphicon glyphicon-th-list btn btn-default btn-sm" })
+}
         </td>
     </tr>
 }

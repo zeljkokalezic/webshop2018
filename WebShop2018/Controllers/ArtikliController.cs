@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebShop2018.Models;
 using System.Linq.Dynamic;
+using System.Net;
 
 namespace WebShop2018.Controllers
 {
@@ -100,6 +101,22 @@ namespace WebShop2018.Controllers
             PostaviKategorije();
             return View(proizvodIzForme);
         }
+
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Proizvod proizvod = db.Proizvodi.Find(id);
+            if (proizvod == null)
+            {
+                return HttpNotFound();
+            }
+            PostaviKategorije();
+            return View(proizvod);
+        }
+
 
         private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, HttpPostedFileBase slika)
         {
