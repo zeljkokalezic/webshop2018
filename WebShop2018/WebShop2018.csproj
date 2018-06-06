@@ -565,6 +565,7 @@
     <Content Include="Views\Orders\ThankYou.cshtml" />
     <Content Include="Views\Shared\_GridPager.cshtml" />
     <Content Include="Views\Proizvodi\Categories.cshtml" />
+    <Content Include="Views\Proizvodi\BootstrapIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

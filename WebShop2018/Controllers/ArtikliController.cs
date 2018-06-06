@@ -146,6 +146,7 @@ namespace WebShop2018.Controllers
         }
 
         [Authorize(Roles = RolesConfig.ADMIN)]
+        [HttpDelete]
         public ActionResult Delete(int id)
         {
             var proizvodIzBaze = db.Proizvodi.Find(id);
@@ -154,9 +155,18 @@ namespace WebShop2018.Controllers
             //db.OrderLines.RemoveRange(orderLinesForDelete);
 
             db.Proizvodi.Remove(proizvodIzBaze);
-            db.SaveChanges();
 
-            return RedirectToAction("Index");
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                // logujemo exception ili tako nesto
+                return new HttpStatusCodeResult(500);
+            }
+
+            return new HttpStatusCodeResult(200);
         }
 
         public void PostaviKategorije()

@@ -13,6 +13,8 @@
             <th>
                 Naziv
             </th>
+            <th>
+            </th>
         </tr>
     </thead>
 </table>
@@ -20,7 +22,7 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            $('#categoriesTable').DataTable({
+            var table = $('#categoriesTable').DataTable({
                 "ajax": {
                     "url": "/api/Kategorije",
                     "dataSrc": ""
@@ -28,8 +30,34 @@
                 "columns": [
                     { 'data': 'Id' },
                     { 'data': 'Naziv' },
-                ]
-            } );
+                    {
+                        'data': 'Actions',
+                        'render': function (data, type, row, meta) {
+                            return '<a class="delete-btn" href="/api/Kategorije/' + row.Id + '">Delete</a>';
+                        }
+                    }
+                ],
+                "drawCallback": function (settings) {
+                    //alert('DataTables has redrawn the table');
+                    $('.delete-btn').on('click', function () {
+                        if (confirm("Are you sure?")) {
+                            var deleteURL = $(this).attr('href');
+                            $.ajax({
+                                url: deleteURL,
+                                type: 'DELETE',
+                                success: function (result) {
+                                    // ovako treba
+                                    table.ajax.reload();
+                                }.bind(this),
+                                error: function (result) {
+                                    alert("Error");
+                                }
+                            });
+                        }
+                        return false;
+                    });
+                }
+            });
         });
     </script>
 }
