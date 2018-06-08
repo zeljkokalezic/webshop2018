@@ -89,18 +89,28 @@
                 @Html.DisplayFor(modelItem => orderLine.Price)
             </td>
             <td>
-                @using (Html.BeginForm("ChangeQuantity", "Orders", FormMethod.Post))
+                @if (Model.State == OrderState.Open)
                 {
-                    <input name="id" type="hidden" value="@orderLine.Id">
-                    <input name="quantity" type="number" value="@orderLine.Quantity" min="1">
-                    <input type="submit" value="Change" class="btn" />
+                    using (Html.BeginForm("ChangeQuantity", "Orders", FormMethod.Post))
+                    {
+                        <input name="id" type="hidden" value="@orderLine.Id">
+                        <input name="quantity" type="number" value="@orderLine.Quantity" min="1">
+                        <input type="submit" value="Change" class="btn" />
+                    }
+                }
+                else
+                {
+                    @orderLine.Quantity
                 }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => orderLine.Total)
             </td>
             <td>
-                @Html.ActionLink("Delete", "DeleteOrderLine", new { id = orderLine.Id })
+                @if (Model.State == OrderState.Open)
+                {
+                    @Html.ActionLink("Delete", "DeleteOrderLine", new { id = orderLine.Id })
+                }
             </td>
         </tr>
     }

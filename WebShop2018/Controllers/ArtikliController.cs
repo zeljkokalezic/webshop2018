@@ -146,13 +146,27 @@ namespace WebShop2018.Controllers
         }
 
         [Authorize(Roles = RolesConfig.ADMIN)]
+        [HttpDelete]
         public ActionResult Delete(int id)
         {
             var proizvodIzBaze = db.Proizvodi.Find(id);
-            db.Proizvodi.Remove(proizvodIzBaze);
-            db.SaveChanges();
 
-            return RedirectToAction("Index");
+            //var orderLinesForDelete = db.OrderLines.Where(ol => ol.Item.Id == proizvodIzBaze.Id);
+            //db.OrderLines.RemoveRange(orderLinesForDelete);
+
+            db.Proizvodi.Remove(proizvodIzBaze);
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                // logujemo exception ili tako nesto
+                return new HttpStatusCodeResult(500);
+            }
+
+            return new HttpStatusCodeResult(200);
         }
 
         public void PostaviKategorije()

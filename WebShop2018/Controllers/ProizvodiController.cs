@@ -28,6 +28,17 @@ namespace WebShop2018.Controllers
             return View(db.Proizvodi.ToList());
         }
 
+        public ActionResult BootstrapIndex()
+        {
+            //var proizvodi = db.Proizvodi.Where(p => p.Cena < 100)
+            //    .OrderByDescending(x => x.Cena)
+            //    .ToList();
+
+            //return View(proizvodi);
+
+            return View(db.Proizvodi.ToList());
+        }
+
         // GET: Proizvodi/Details/5
         public ActionResult Details(int? id)
         {
@@ -157,6 +168,11 @@ namespace WebShop2018.Controllers
 
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Categories()
+        {
+            return View();
         }
 
         protected override void Dispose(bool disposing)

@@ -92,11 +92,50 @@
 
 @Html.Partial("_GridPager", Model)
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body">
+                <p>Delete error!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 @section Scripts{
     <script>
         // jQuery
         $('.delete-dugme').on('click', function () {
-            return confirm("Are you sure?");
+
+            if (confirm("Are you sure?")) {
+                var deleteURL = $(this).attr('href');
+                $.ajax({
+                    url: deleteURL,
+                    type: 'DELETE',
+                    success: function (result) {
+                        // nije dobro resenje
+                        $(this).parent().parent().hide();
+                        // i ovo nije dobro resenje :)
+                        //location.reload();
+                    }.bind(this),
+                    error: function (result) {
+                        $("#myModal").modal("show");
+                    }
+                });
+                
+            }
+            return false;
         });
     </script>
 }

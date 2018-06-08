@@ -1,0 +1,17 @@
+﻿@model IEnumerable<WebShop2018.Models.Proizvod>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Bootstrap Test</h2>
+
+<div class="row">
+    @foreach (var proizvod in Model)
+    {
+        <div class="col-sm-4" style="">
+            <img src="@string.Format("/Content/Artikli/{0}", proizvod.ImeSlikeZaPrikaz)" style="width:100px;">
+            @proizvod.Naziv
+        </div>
+    }
+</div>
