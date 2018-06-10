@@ -16,6 +16,7 @@ namespace WebShop2018.Models
 
     public class Proizvod
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         public int Id { get; set; }
 
         public StanjeProizvoda Stanje { get; set; }
@@ -30,15 +31,9 @@ namespace WebShop2018.Models
         public decimal Cena { get; set; }
 
         public string ImeSlike { get; set; }
+        public virtual ICollection<Slike> slike { get; set; }
 
-        public string ImeSlikeZaPrikaz
-        {
-            get
-            {
-                // nije bas najpametnije resenje
-                return string.IsNullOrWhiteSpace(ImeSlike) ? "no_image.png" : string.Format("{0}{1}", Id, ImeSlike);
-            }
-        }
+        public string NoImage { get { return slike.Count() == 0 ? "noimage.jpg" : string.Format("{0}{1}", Id, db.Slike.FirstOrDefault(o => o.proizvod.Id == Id).Naziv); } }
 
 
         public virtual Kategorija Kategorija { get; set; }

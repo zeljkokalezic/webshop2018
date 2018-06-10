@@ -1,0 +1,26 @@
+﻿
+@model WebShop2018.Models.Slike
+@{
+
+}
+
+<h2>AddPicture</h2>
+@using (Html.BeginForm("AddPicture", "Artikli", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+
+
+
+
+    @Html.LabelFor(m => m.Opis)
+    @Html.EditorFor(m => m.Opis)
+    @Html.ValidationMessageFor(m => m.Opis)
+    <br />
+
+    <input name="slika" type="file" accept="image/*" />
+
+
+
+    <input type="submit" value="Create" />
+
+}
