@@ -170,6 +170,7 @@ namespace WebShop2018.Controllers
             return RedirectToAction("Index");
         }
 
+        [AllowAnonymous]
         public ActionResult Categories()
         {
             return View();

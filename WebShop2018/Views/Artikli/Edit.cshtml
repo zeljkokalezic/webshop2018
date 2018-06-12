@@ -1,0 +1,67 @@
+﻿@model WebShop2018.Models.Proizvod
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("Back", "Index")
+
+@*moramo da stavimo encoding za formu da bi poslali slliku (enctype = "multipart/form-data")*@
+@using (Html.BeginForm((string)ViewBag.Title, "Artikli", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.LabelFor(m => m.Naziv)
+    @Html.EditorFor(m => m.Naziv)
+    @Html.ValidationMessageFor(m => m.Naziv)
+
+    <br />
+    @Html.LabelFor(m => m.Cena)
+    @Html.EditorFor(m => m.Cena)
+    @Html.ValidationMessageFor(m => m.Cena)
+
+    <br />
+    @Html.LabelFor(m => m.Stanje)
+    @Html.EnumDropDownListFor(m => m.Stanje)
+    @Html.ValidationMessageFor(m => m.Stanje)
+
+    <br />
+    @Html.LabelFor(m => m.Kategorija)
+    @Html.DropDownListFor(m => m.Kategorija.Id,
+                            new SelectList(ViewBag.Kategorije, "Id", "Naziv")
+                          )
+    @Html.ValidationMessageFor(m => m.Kategorija)
+
+    <br />
+
+    <div class="form-group">
+        <label class="control-label">Dodaj sliku</label>
+        <div>
+            <input type="file" name="slika" accept=".jpg,.gif,.jpeg,.png" multiple />
+        </div>
+    </div>
+    <br />
+
+    <div class="col-md-12" style="margin-bottom:50px;">
+        <input type="submit" value="Save" />
+    </div>
+}
+
+    <div class="container">
+        <div class="row">
+            @foreach (var slika in Model.Slike)
+            {
+                <div class="col-md-3">
+                    <div style="padding:50px;">
+                        <img src="@string.Format("/Content/Artikli/{0}", slika.NazivSlikeZaPrikaz)" style="width:100%;">
+                        <p style="text-align:center; margin-top:10px;">@Html.DisplayFor(s => slika.NazivSlike)</p>
+                        <input type="button" value="Obrisi" onclick="location.href='@Url.Action("Delete", "Slike", new { id = slika.Id })'" style="margin:20px 0; font-size:15px;" />
+                        <input type="button" value="Dodaj opis" onclick="location.href='@Url.Action("Edit", "Slike", new { id = slika.Id, proizvodId = Model.Id })'" style="margin:20px 0; font-size:15px; float:right;" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

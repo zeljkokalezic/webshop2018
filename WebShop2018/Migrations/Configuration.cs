@@ -32,6 +32,13 @@ namespace WebShop2018.Migrations
             //    );
             //
 
+            context.Kategorije.AddOrUpdate(
+              k => k.Naziv,
+              new Kategorija { Naziv = "Monitori" },
+              new Kategorija { Naziv = "Misevi" },
+              new Kategorija { Naziv = "Tastature" }
+            );
+
             // Pravimo nove role:
             // - napravimo role manager
             // - proverimo da li role postoje
