@@ -2,6 +2,8 @@
 @model WebShop2018.Models.ArtikliGridViewModel
 
 @{
+    /**/
+
     ViewBag.Title = "View";
 }
 
@@ -9,21 +11,40 @@
 
 @using (Html.BeginForm())
 {
-    <p>
-        Ime sadrzi: @Html.TextBox("query")
-        Cena do: @Html.TextBox("maxPrice")
-        <input type="submit" value="Search" />
-    </p>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                Ime sadrzi: @Html.TextBox("query", null, new { @class = "form-control text-primary" })
+            </div>
+            <div class="col-lg-4">
+                Cena do: @Html.TextBox("maxPrice", null, new { @class = "form-control text-primary" })
+            </div>
+            <div class="col-lg-4">
+                <div class="col-lg-4"><button type="submit" value="Search" class="btn btn-default btn-lg "> <span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Тражи </button></div>
+            </div>
+        </div>
+    </div>
+
 }
+
+<hr>
 
 @if (User.IsInRole(RolesConfig.ADMIN))
 {
-    @Html.ActionLink("Create New", "Create")
+    <button class="btn btn-default btn-create">
+        @Html.ActionLink("Додај нови производ !", "Create")
+    </button>
 }
+<hr>
 
-Narucili ste @ViewBag.OrderLineCount artikla
-<br />
-Total: @ViewBag.OrderPrice
+
+@if (User.IsInRole(RolesConfig.USER))
+{
+
+    <p>Укупно наруџбина:&nbsp;&nbsp;@ViewBag.OrderLineCount</p>
+    <p>Потрошили сте:&nbsp;&nbsp;@ViewBag.OrderPrice</p>
+   
+}
 
 
 <table class="table">
@@ -47,48 +68,63 @@ Total: @ViewBag.OrderPrice
             Akcije
         </th>
     </tr>
-@foreach (var proizvod in Model.Artikli)
-{
-    <tr>
-        <td>
-            <img src="@string.Format("/Content/Artikli/{0}", proizvod.ImeSlikeZaPrikaz)" style="width:100px;">
-        </td>
-        <td>
-            @proizvod.Naziv
-        </td>
-        <td>
-            @proizvod.Cena
-        </td>
-        <td>
-            @proizvod.Stanje
-        </td>
-        <td>
-            @Html.DisplayFor(p => proizvod.Kategorija.Naziv)
-        </td>
-        <td>
-            @if (Request.IsAuthenticated && User.IsInRole(RolesConfig.ADMIN))
+    @foreach (var proizvod in Model.Artikli)
     {
-        @Html.ActionLink("Edit", "Edit", new { id = proizvod.Id }, new { @class = "" })
-        @Html.Raw("<br/>")
-        @Html.ActionLink("Delete", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme" })
-}
-            @if (User.IsInRole(RolesConfig.USER))
-    {
-        @Html.ActionLink(" ", "AddToCart", "Artikli", new { id = proizvod.Id }, new { @class = "text-primary glyphicon glyphicon-plus btn btn-default btn-sm" })
-        @Html.Raw("&nbsp;")
-        @Html.ActionLink(" ", "Details", "Artikli", new { id = proizvod.Id }, new { @class = "text-success glyphicon glyphicon-th-list btn btn-default btn-sm" })
-}
-        </td>
-    </tr>
-}
+        <tr>
+            <td>
+                <img src="@string.Format("/Content/Artikli/{0}", proizvod.ImeSlikeZaPrikaz)" style="width:100px;">
+            </td>
+            <td>
+                @proizvod.Naziv
+            </td>
+            <td>
+                @proizvod.Cena
+            </td>
+            <td>
+                @proizvod.Stanje
+            </td>
+            <td>
+                @Html.DisplayFor(p => proizvod.Kategorija.Naziv)
+            </td>
+            <td>
+                @if (Request.IsAuthenticated && User.IsInRole(RolesConfig.ADMIN))
+                {
+                    @Html.ActionLink(" ", "Edit", new { id = proizvod.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-primary btn-sm" })
+                    @Html.Raw("&nbsp;&nbsp;")
+                    @Html.ActionLink(" ", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme glyphicon glyphicon-remove text-danger btn btn-default btn-sm" })
+                }
+                @if (User.IsInRole(RolesConfig.USER))
+                {
+                    @Html.ActionLink(" ", "AddToCart", "Artikli", new { id = proizvod.Id }, new { @class = "text-primary glyphicon glyphicon-plus btn btn-default btn-sm" })
+                    @Html.Raw("&nbsp;&nbsp;")
+                    @Html.ActionLink(" ", "Details", "Artikli", new { id = proizvod.Id }, new { @class = "text-success glyphicon glyphicon-th-list btn btn-default btn-sm" })
+                }
+            </td>
+        </tr>
+    }
 </table>
 
-@for (int i = 1; i <= Model.TotalPages; i++)
-{
-    @Html.ActionLink(i.ToString(), "Index", Model.GetPagingParameters(i))
-    @Html.Raw("|")
-}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-lg-12">
+            <nav aria-label="Page navigation example">
 
+                <ul class="pagination justify-content-center">
+                    <li>
+
+
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            @Html.ActionLink(i.ToString(), "Index", Model.GetPagingParameters(i))
+
+                        }
+
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
 @section Scripts{
     <script>
         // jQuery

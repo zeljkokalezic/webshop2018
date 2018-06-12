@@ -1,4 +1,7 @@
-﻿<div class="navbar navbar-inverse navbar-fixed-top">
+﻿@using WebShop2018.Models
+
+
+<div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -14,6 +17,11 @@
                 <li>@Html.ActionLink("Home", "Index", "Home")</li>
                 <li>@Html.ActionLink("About", "About", "Home")</li>
                 <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
+                @if (User.IsInRole(RolesConfig.ADMIN))
+                {
+            <li>@Html.ActionLink("Slike", "Index", "Images")</li>
+                }
             </ul>
             @Html.Partial("_LoginPartial")
         </div>

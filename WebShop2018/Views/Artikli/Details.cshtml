@@ -1,9 +1,9 @@
 ﻿@model WebShop2018.Models.Proizvod
-
+@using WebShop2018.Models
 @{
-                /**/
+    /**/
 
-                ViewBag.Title = "Details";
+    ViewBag.Title = "Details";
 }
 
 <h2>Details</h2>
@@ -29,11 +29,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Kategorija)
+            @Html.DisplayNameFor(model => model.Kategorija.Naziv)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Kategorija)
+            @Html.DisplayFor(model => model.Kategorija.Naziv)
         </dd>
 
     </dl>
@@ -41,6 +41,51 @@
 <p>
     @Html.ActionLink(" ", "Index", " ", new { @class = "text-warning glyphicon glyphicon-arrow-left btn btn-default btn-sm" })
     @Html.Raw("&nbsp;")
-    @Html.ActionLink(" ", "Edit", new { id = Model.Id }, new { @class = "text-success glyphicon glyphicon-pencil btn btn-default btn-sm" })
+    @if (User.IsInRole(RolesConfig.ADMIN))
+    {
+        @Html.ActionLink(" ", "Edit", new { id = Model.Id }, new { @class = "text-success glyphicon glyphicon-pencil btn btn-default btn-sm" })
+    }
+    </p>
 
-</p>
+<div class="container">
+    <div class="row text-center text-default">
+        <div class="col-lg-12">
+            <h1>Slike proizvoda</h1>
+            <p>click on image for more details :)</p>
+
+    </div>
+    </div>
+    </div>
+
+<div class="container">
+<div class="row text-center">
+    @foreach (var images in Model.Images)
+     {
+
+    <div class="col-sm-3 mt-4" style="">
+        @Html.DisplayFor(modelItem => images.ImeSlikeZaPrikaz)
+        <hr>
+        <br>
+
+        <a class="example-image-link" href="@string.Format("/Content/Artikli/{0}", images.ImeSlikeZaPrikaz)" data-lightbox="example-set">
+            <img class="example-image img-thumbnail" src="@string.Format("/Content/Artikli/{0}", images.ImeSlikeZaPrikaz)" style="width:200px;">
+            
+        </a>    
+            
+            <br>
+
+            <hr>
+            @if (User.IsInRole(RolesConfig.ADMIN))
+        {
+            <p>Obrisi sliku !</p>
+            @Html.ActionLink(" ", "Delete", "Images", new { id = images.Id }, new { @class = "text-danger glyphicon glyphicon-remove btn btn-default btn-sm" })
+    }
+
+    </div>
+
+           
+     }
+</div>
+</div>
+
+    

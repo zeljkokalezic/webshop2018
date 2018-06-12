@@ -15,8 +15,12 @@ namespace WebShop2018.Models
         public string SortBy { get; set; } = "Naziv";
         public string SortDirection { get; set; } = "ASC";
 
+
+        public Order Order { get; set; }
+
+
         // za paginaciju
-        public int PageSize { get; set; } = 10;
+        public int PageSize { get; set; } = 5;
         public int Page { get; set; } = 1;
         public int Count { get; set; }
         public int TotalPages

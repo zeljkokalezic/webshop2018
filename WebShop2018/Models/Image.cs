@@ -11,5 +11,15 @@ namespace WebShop2018.Models
         public string ImageName { get; set; }
 
         public Proizvod Proizvod { get; set; }
+
+
+        public string ImeSlikeZaPrikaz
+        {
+            get
+            {
+                // nije bas najpametnije resenje
+                return string.IsNullOrWhiteSpace(ImageName) ? "no_image.png" : string.Format("{0}{1}",Id, ImageName);
+            }
+        }
     }
 }

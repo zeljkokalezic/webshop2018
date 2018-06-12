@@ -205,6 +205,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArtikliController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OnlineDobavljacsController.cs" />
     <Compile Include="Controllers\ProizvodiController.cs" />
@@ -258,6 +259,24 @@
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\lightbox\dist\css\lightbox.css" />
+    <Content Include="Content\lightbox\dist\css\lightbox.min.css" />
+    <Content Include="Content\lightbox\dist\images\close.png" />
+    <Content Include="Content\lightbox\dist\images\loading.gif" />
+    <Content Include="Content\lightbox\dist\images\next.png" />
+    <Content Include="Content\lightbox\dist\images\prev.png" />
+    <Content Include="Content\lightbox\dist\js\lightbox-plus-jquery.js" />
+    <Content Include="Content\lightbox\dist\js\lightbox-plus-jquery.min.js" />
+    <Content Include="Content\lightbox\dist\js\lightbox.js" />
+    <Content Include="Content\lightbox\dist\js\lightbox.min.js" />
+    <Content Include="Content\lightbox\examples\index.html" />
+    <Content Include="Content\lightbox\Gruntfile.js" />
+    <Content Include="Content\lightbox\src\css\lightbox.css" />
+    <Content Include="Content\lightbox\src\images\close.png" />
+    <Content Include="Content\lightbox\src\images\loading.gif" />
+    <Content Include="Content\lightbox\src\images\next.png" />
+    <Content Include="Content\lightbox\src\images\prev.png" />
+    <Content Include="Content\lightbox\src\js\lightbox.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -267,6 +286,19 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\lightbox\.editorconfig" />
+    <Content Include="Content\lightbox\.gitignore" />
+    <Content Include="Content\lightbox\.jscsrc" />
+    <Content Include="Content\lightbox\.jshintrc" />
+    <Content Include="Content\lightbox\bower.json" />
+    <Content Include="Content\lightbox\CONTRIBUTING.md" />
+    <Content Include="Content\lightbox\DEPLOY.md" />
+    <Content Include="Content\lightbox\dist\js\lightbox-plus-jquery.min.map" />
+    <Content Include="Content\lightbox\dist\js\lightbox.min.map" />
+    <Content Include="Content\lightbox\LICENSE" />
+    <Content Include="Content\lightbox\package.json" />
+    <Content Include="Content\lightbox\README.md" />
+    <Content Include="Content\lightbox\ROADMAP.md" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -329,6 +361,11 @@
     <Content Include="Views\Artikli\Index.cshtml" />
     <Content Include="Views\Artikli\Create.cshtml" />
     <Content Include="Views\Artikli\Details.cshtml" />
+    <Content Include="Views\Images\Create.cshtml" />
+    <Content Include="Views\Images\Delete.cshtml" />
+    <Content Include="Views\Images\Details.cshtml" />
+    <Content Include="Views\Images\Edit.cshtml" />
+    <Content Include="Views\Images\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Artikli\" />

@@ -26,6 +26,22 @@ namespace WebShop2018.Models
         public DateTime CreatedAt { get; set; }
         public OrderState State { get; set; }
 
+        public decimal Total
+        {
+            get
+            {
+                return OrderLines != null ? OrderLines.Sum(ol => ol.Price * ol.Quantity) : 0;
+            }
+        }
+
+        public decimal TotalItems
+        {
+            get
+            {
+                return OrderLines != null ? OrderLines.Sum(ol => ol.Quantity) : 0;
+            }
+        }
+
         public virtual ApplicationUser User { get; set; }
         public virtual ICollection<OrderLine> OrderLines { get; set; }
     }

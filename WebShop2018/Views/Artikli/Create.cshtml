@@ -2,39 +2,73 @@
 
 <h2>@ViewBag.Title</h2>
 
-@Html.ActionLink("Back", "Index")
-
+@Html.ActionLink(" ", "Index", " ", new { @class = "text-warning glyphicon glyphicon-arrow-left btn btn-default btn-sm" })
+<hr>
 @*moramo da stavimo encoding za formu da bi poslali slliku (enctype = "multipart/form-data")*@
 @using (Html.BeginForm((string)ViewBag.Title, "Artikli", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.LabelFor(m => m.Naziv)
-    @Html.EditorFor(m => m.Naziv)
-    @Html.ValidationMessageFor(m => m.Naziv)
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.LabelFor(m => m.Naziv, htmlAttributes: new { @class = "control-label col-md-2 text-danger text-uppercase" })
+        <div class="col-md-10">
+            @Html.EditorFor(m => m.Naziv, new { htmlAttributes = new { @class = "form-control text-success" } })
+            @Html.ValidationMessageFor(m => m.Naziv, " ", new { @class = "text-danger text-uppercase" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Cena, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(m => m.Cena, new { htmlAttributes = new { @class = "form-control text-success" } })
+            @Html.ValidationMessageFor(m => m.Cena)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Stanje, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EnumDropDownListFor(m => m.Stanje, new { @class = "form-control text-success" })
+            @Html.ValidationMessageFor(m => m.Stanje)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Kategorija, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.Kategorija.Id,
+               new SelectList(ViewBag.Kategorije, "Id", "Naziv"), new { @class = "form-control text-success" })
+             
+            @Html.ValidationMessageFor(m => m.Kategorija)
+        </div>
+    </div>
 
-    <br />
-    @Html.LabelFor(m => m.Cena)
-    @Html.EditorFor(m => m.Cena)
-    @Html.ValidationMessageFor(m => m.Cena)
+    <div class="row">
+        <div class="col-md-offset-2 col-md-10">
+            <label>Slika:</label>
+            <input name="slika" type="file" accept=".jpg, .png, .gif">
+        </div>
+        <hr>
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default">
+            </div>
+        </div>
+    </div>
 
-    <br />
-    @Html.LabelFor(m => m.Stanje)
-    @Html.EnumDropDownListFor(m => m.Stanje)
-    @Html.ValidationMessageFor(m => m.Stanje)
-
-    <br />
-    @Html.LabelFor(m => m.Kategorija)
-    @Html.DropDownListFor(m => m.Kategorija.Id,
-                            new SelectList(ViewBag.Kategorije, "Id", "Naziv")
-                          )
-    @Html.ValidationMessageFor(m => m.Kategorija)
-
-    <br />
-    <label>Slika</label>
-    <input name="slika" type="file"accept=".jpg,.gif,.jpeg,.png"/>
-
-    <br />
-    <input type="submit" value="Save"/>
+</div>
 }
+
+<label>Dodaj jos slika za ovaj proizvod:</label>
+@Html.ActionLink(" ", "Create", "Images", " ", new { @class = "glyphicon glyphicon-plus btn btn-primary btn-sm" })
+@*@using (Html.BeginForm("AddImage", "Artikli", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <label>Dodaj jos jednu sliku</label>
+        <input name="slika" type="file" accept=".jpg,.gif,.jpeg,.png" />
+
+        <br />
+        <input type="submit" value="Save" />
+    }*@
+
+
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

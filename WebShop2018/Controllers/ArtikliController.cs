@@ -87,11 +87,28 @@ namespace WebShop2018.Controllers
                 db.Proizvodi.Add(proizvodIzForme);
                 db.SaveChanges();
 
-                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slika);
+
+
+                //var image = proizvodIzForme.Images.FirstOrDefault(i => i.Proizvod.Id == proizvodIzForme.Id);
+
+                //if (image == null)
+                //{
+                //    image = new Image()
+                //    {
+                //        Proizvod = proizvodIzForme,
+                //        ImageName = proizvodIzForme.ImeSlike
+                //    };
+
+                //    db.Images.Add(image);
+                //}
 
                 // drugi save changes nam snima ime slike
+                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slika);
+
                 db.SaveChanges();
 
+                //SnimiSliku(image, slika);
+                //db.SaveChanges();
                 //ako je sve uredu salje na index akciju (lista proizvoda)
                 return RedirectToAction("Index");
             }
@@ -101,6 +118,11 @@ namespace WebShop2018.Controllers
             PostaviKategorije();
             return View(proizvodIzForme);
         }
+
+
+
+
+
 
         public ActionResult Details(int? id)
         {
@@ -129,6 +151,8 @@ namespace WebShop2018.Controllers
                 
             }
         }
+
+       
 
         [Authorize(Roles = RolesConfig.ADMIN)]
         public ActionResult Edit(int id)
@@ -160,10 +184,12 @@ namespace WebShop2018.Controllers
                 proizvodIzBaze.Kategorija = db.Kategorije.Find(proizvodIzForme.Kategorija.Id);
 
                 SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzBaze, slika);
-
+                
                 // snimi u bazu
                 db.SaveChanges();
 
+               
+                
                 // vrati na listu ako je sve u redu
                 return RedirectToAction("Index");
             }
@@ -232,5 +258,45 @@ namespace WebShop2018.Controllers
 
             return RedirectToAction("Index");
         }
+
+    //    private void SnimiSliku(Image image, HttpPostedFileBase slika)
+    //    {
+    //        if (slika != null)
+    //        {
+    //            image.ImageName = slika.FileName;
+
+    //            var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{image.ImeSlikeZaPrikaz}");
+    //            slika.SaveAs(putanjaDoSlike);
+
+    //        }
+    //    }
+
+
+    //    [Authorize(Roles = RolesConfig.ADMIN)]
+    //    public ActionResult AddImage(int id)
+    //    {
+    //        var item = db.Proizvodi.Find(id);
+            
+           
+    //        var image = item.Images.FirstOrDefault(i => i.Proizvod.Id == item.Id);
+
+    //        if (image == null)
+    //        {
+    //            image = new Image()
+    //            {
+    //                Proizvod = item,
+    //                ImageName = item.ImeSlike
+    //            };
+
+    //            db.Images.Add(image);
+    //        }
+
+            
+    //        //SnimiSliku(image, slika);
+          
+    //        db.SaveChanges();
+
+    //        return RedirectToAction("Create");
+    //    }
     }
 }

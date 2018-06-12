@@ -22,11 +22,11 @@ namespace WebShop2018.Models
 
         [Required(ErrorMessage = "Naziv mora da se navede")]
         [StringLength(50)]
-        [DisplayName("Ime")]
+        [DisplayName("Ime Proizvoda:")]
         public string Naziv { get; set; }
 
-        [DisplayName("Vrednost proizvoda")]
-        [Range(0.00, 10000.00)]
+        [DisplayName("Vrednost proizvoda:")]
+        [Range(0.00, 50000.00)]
         public decimal Cena { get; set; }
 
         public string ImeSlike { get; set; }

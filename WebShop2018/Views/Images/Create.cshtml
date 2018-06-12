@@ -1,0 +1,67 @@
+﻿@model WebShop2018.Models.Image
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm((string)ViewBag.Title, "Images", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Image</h4>
+    <hr />
+    @Html.ValidationSummary(true, " ", new { @class = "text-danger" })
+
+    @*<div class="form-group">
+        @Html.LabelFor(model => model.ImageName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ImageName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ImageName, " ", new { @class = "text-danger" })
+        </div>
+    </div>*@
+    <div class="form-group">
+        @Html.LabelFor(m => m.Proizvod, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("proizvodId",new SelectList(ViewBag.Proizvodi, "Id", "Naziv")
+                                                   , new { @class = "form-control text-success" })
+            @Html.ValidationMessageFor(m => m.Proizvod, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    
+      
+   
+
+    <div class="row">
+        <div class="col-md-offset-2 col-md-10">
+            <label>Slika:</label>
+            <input name="slika" type="file" accept=".jpg, .png, .gif">
+        </div>
+        <hr>
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default">
+            </div>
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>*@
+</div>
+}
+
+<div>
+    @Html.ActionLink(" ", "Index", " ",  new { @class = "text-warning glyphicon glyphicon-arrow-left btn btn-default btn-sm" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

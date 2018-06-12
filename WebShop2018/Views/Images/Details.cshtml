@@ -1,0 +1,36 @@
+﻿@model WebShop2018.Models.Image
+    @using WebShop2018.Models
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Image</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImageName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Proizvod.Naziv)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Proizvod.Naziv)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink(" ", "Index", "Images", new { @class = "text-warning glyphicon glyphicon-arrow-left btn btn-default btn-sm" })
+   
+
+
+</p>

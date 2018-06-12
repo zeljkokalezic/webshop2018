@@ -1,0 +1,19 @@
+﻿Napomena:
+Izvrsio sam fork projekta pre nego sto smo radili dodavanje u korpu i generisanje OrdersController i View/Order
+Tako da u ovoj verziji projekta nema implementirano dodavanje u korpi !!!
+
+Za domaci zadatak sam omogucio dodavanje vise slika za svaki pojedinacni proizvod i pregled istih u Details stranici.
+Pregled detail stranice je omoguceno samo korisniku pera@detlic.com
+a dodavanje slika svakom proizvodu samo admin@site.com
+Implementirao sam lightbox zoom slike !
+
+Accounts:
+
+user
+pera@detlic.com
+pass: 123
+
+user
+admin@site.com
+pass: 123456
+
