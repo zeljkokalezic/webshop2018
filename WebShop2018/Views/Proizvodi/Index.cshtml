@@ -1,68 +1,104 @@
-﻿@model IEnumerable<WebShop2018.Models.Proizvod>
+﻿@using WebShop2018.Models
+@model WebShop2018.ViewModels.ArtikliGridViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "View";
 }
 
-<h2>Index</h2>
+<h2>Ukupno proizvoda: @Model.Count</h2>
 
-<p>
-    @Html.ActionLink("Categories", "Categories")
+@using (Html.BeginForm())
+{
+    <p>
+        Ime sadrzi: @Html.TextBox("query")
+        Cena do: @Html.TextBox("maxPrice")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+@if (User.IsInRole(RolesConfig.ADMIN))
+{
     @Html.ActionLink("Create New", "Create")
-</p>
+}
 
-<table id="tabelaProizvoda" class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Naziv)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cena)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Kategorija)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Stanje)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+@if (User.IsInRole(RolesConfig.USER) && Model.Order != null)
+{
+    @Html.Raw($"<b>Narucili ste {Model.Order.TotalItems} artikla. Vas total je: {Model.Order.Total} </b>")
+    using (Html.BeginForm("Details", "Orders", FormMethod.Get))
+    {
+        <p>
+            @Html.Hidden("id", Model.Order.Id)
+            <input type="submit" value="Naruci" />
+        </p>
+    }
+}
 
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Naziv)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cena)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Kategorija.Naziv)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Stanje)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-            </tr>
-        }
-    </tbody>
 
+
+<table class="table">
+    <tr>
+        <th>
+            Slika
+        </th>
+        <th>
+            @Html.ActionLink("Naziv", "Index", Model.GetSortingParameters("Naziv"))
+        </th>
+        <th>
+            @Html.ActionLink("Cena", "Index", Model.GetSortingParameters("Cena"))
+        </th>
+        <th>
+            @Html.ActionLink("Stanje", "Index", Model.GetSortingParameters("Stanje"))
+        </th>
+        <th>
+            @Html.ActionLink("Kategorija", "Index", Model.GetSortingParameters("Kategorija.Naziv"))
+        </th>
+        <th>
+            Akcije
+        </th>
+    </tr>
+@foreach (var proizvod in Model.Artikli)
+{
+    <tr>
+        <td>
+            <img src="@string.Format("/Content/Artikli/{0}", proizvod.SlikaZaPrikaz)" style="width:100px;">
+        </td>
+        <td>
+            @proizvod.Naziv
+        </td>
+        <td>
+            @proizvod.Cena
+        </td>
+        <td>
+            @proizvod.Stanje
+        </td>
+        <td>
+            @Html.DisplayFor(p => proizvod.Kategorija.Naziv)
+        </td>
+        <td>
+            @if (Request.IsAuthenticated && User.IsInRole(RolesConfig.ADMIN))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = proizvod.Id }, new { @class = "" })
+        @Html.Raw("<br/>")
+        @Html.ActionLink("Details", "Details", new { id = proizvod.Id })
+        @Html.Raw("<br/>")
+        @Html.ActionLink("Delete", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme" })
+}
+            @if (User.IsInRole(RolesConfig.USER))
+    {
+        @Html.ActionLink("Dodaj u korpu", "AddToCart", new { id = proizvod.Id }, new { @class = "" })
+}
+        </td>
+    </tr>
+}
 </table>
 
+@Html.Partial("_GridPager", Model)
 
 @section Scripts{
     <script>
-        $(document).ready(function () {
-            $('#tabelaProizvoda').DataTable();
+        // jQuery
+        $('.delete-dugme').on('click', function () {
+            return confirm("Are you sure?");
         });
     </script>
 }
-

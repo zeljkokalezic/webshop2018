@@ -23,26 +23,4 @@ namespace WebShop2018.Models
             return userIdentity;
         }
     }
-
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-    {
-        public virtual DbSet<Proizvod> Proizvodi { get; set; }
-        public virtual DbSet<Kategorija> Kategorije { get; set; }
-        public virtual DbSet<Dobavljac> Dobavljaci { get; set; }
-
-        public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<OrderLine> OrderLines { get; set; }
-
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
-        {
-        }
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
-
-        public System.Data.Entity.DbSet<WebShop2018.Models.OnlineDobavljac> Dobavljacs { get; set; }
-    }
 }

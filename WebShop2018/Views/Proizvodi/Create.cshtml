@@ -1,66 +1,57 @@
 ﻿@model WebShop2018.Models.Proizvod
-
-@{
-    ViewBag.Title = "Create";
-}
-
-<h2>Create</h2>
-
-
-@using (Html.BeginForm()) 
+<h2>@ViewBag.Title</h2>
+@Html.ActionLink("Back", "Index")
+@*moramo da stavimo encoding za formu da bi poslali slliku (enctype = "multipart/form-data")*@
+@using (Html.BeginForm((string)ViewBag.Title, "Proizvodi", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.AntiForgeryToken()
+    @Html.LabelFor(m => m.Naziv)
+    @Html.EditorFor(m => m.Naziv)
+    @Html.ValidationMessageFor(m => m.Naziv)
+
+    <br />
+    @Html.LabelFor(m => m.Cena)
+    @Html.EditorFor(m => m.Cena)
+    @Html.ValidationMessageFor(m => m.Cena)
+
+    <br />
+    @Html.LabelFor(m => m.Stanje)
+    @Html.EnumDropDownListFor(m => m.Stanje)
+    @Html.ValidationMessageFor(m => m.Stanje)
+
+    <br />
+    @Html.LabelFor(m => m.Kategorija)
+    @Html.DropDownListFor(m => m.Kategorija.Id, new SelectList(ViewBag.Kategorije, "Id", "Naziv"))
+    @Html.ValidationMessageFor(m => m.Kategorija)
+    <br />
+
     
-    <div class="form-horizontal">
-        <h4>Proizvod</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Naziv, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Naziv, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Naziv, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Cena, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Cena, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Cena, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    if (ViewBag.Title == "Edit" && Model.Slike != null)
+    {
+        foreach (var picture in Model.Slike)
+        {
+            <img src=@string.Format("/Content/Artikli/{0}", picture.Naziv) style="width:100px; height: 100px;" />
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Stanje, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.Stanje, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Stanje, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            @Html.RadioButtonFor(model => model.SlikaZaPrikazId, picture.Id, picture.Id == Model.SlikaZaPrikazId ? new Dictionary<string, object> { { "checked", "checked" } } : new Dictionary<string, object> { });
+            @Html.ActionLink("Delete", "DeleteImage", new { id = picture.Proizvod.Id, imeSlike = picture.Naziv })
+            @Html.ActionLink("Edit", "EditImage")
+        }
+    }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Kategorija, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Kategorija.Id,
-                            new SelectList(ViewBag.Kategorije, "Id", "Naziv"),
-                            new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Kategorija, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+    <br />
+    <label>Slika</label>
+    //prikaz vise slika
+    <input name="slika" type="file" accept="image/*" multiple="multiple" />
+
+    <br />
+    //opiss
+        <label>Opis</label>
+        <textarea name="message" rows="10" cols="30"></textarea>
+
+    <br />
+    <input type="submit" value="Save" />
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

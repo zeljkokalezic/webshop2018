@@ -27,21 +27,15 @@ namespace WebShop2018.Models
 
         [DisplayName("Vrednost proizvoda")]
         [Range(0.00, 10000.00)]
+        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
         public decimal Cena { get; set; }
-
-        public string ImeSlike { get; set; }
-
-        public string ImeSlikeZaPrikaz
-        {
-            get
-            {
-                // nije bas najpametnije resenje
-                return string.IsNullOrWhiteSpace(ImeSlike) ? "no_image.png" : string.Format("{0}{1}", Id, ImeSlike);
-            }
-        }
-
 
         public virtual Kategorija Kategorija { get; set; }
         public virtual ICollection<Dobavljac> Dobavljaci { get; set; }
+        public virtual ICollection<Slika> Slike { get; set; }
+        //opis
+        public virtual Opis Opis{ get; set; }
+
+        public int? SlikaZaPrikazId { get; set; }
     }
 }

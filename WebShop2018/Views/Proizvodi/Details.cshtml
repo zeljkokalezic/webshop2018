@@ -4,9 +4,9 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2 style="margin: 20px 0px 25px 0px;  ">Details</h2>
 
-<div>
+<div >
     <h4>Proizvod</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -26,15 +26,24 @@
             @Html.DisplayFor(model => model.Cena)
         </dd>
 
+    </dl>
+    <div>
+        @foreach (var picture in Model.Slike)
+        {
+            <img src=@string.Format("/Content/Artikli/{0}", picture.Naziv) style="width:100px; height:100px; margin-left:15px; margin-bottom:15px;" />
+        }
+    </div>
+    @* opisssss *@
+    <dl>
         <dt>
-            @Html.DisplayNameFor(model => model.Kategorija)
+            @Html.DisplayNameFor(model => model.Opis)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Kategorija)
+            @Html.DisplayFor(model => model.Opis)
         </dd>
-
     </dl>
+
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

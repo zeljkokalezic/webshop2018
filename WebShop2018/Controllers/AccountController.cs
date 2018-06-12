@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebShop2018.Models;
+using WebShop2018.ViewModels;
 
 namespace WebShop2018.Controllers
 {

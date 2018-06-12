@@ -28,7 +28,7 @@ namespace WebShop2018
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/theme").Include(
-                      "~/Content/bootstrap-theme.css",
+                      "~/Content/temaneka.css",
                       "~/Content/site.css"));
         }
     }
