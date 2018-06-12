@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using WebShop2018.Models;
 using System.Linq.Dynamic;
 using System.IO;
+using System.Net;
 
 namespace WebShop2018.Controllers
 {
@@ -66,7 +67,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Create(Proizvod proizvodIzForme, HttpPostedFileBase slika)
+        public ActionResult Create(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase>slika,string e)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +76,7 @@ namespace WebShop2018.Controllers
                 db.Proizvodi.Add(proizvodIzForme);
                 db.SaveChanges();
 
-                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slika);
+                UploadPicture(slika,proizvodIzForme ,e);
 
                 // drugi save changes nam snima ime slike
                 db.SaveChanges();
@@ -90,18 +91,52 @@ namespace WebShop2018.Controllers
             return View(proizvodIzForme);
         }
 
-        private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, HttpPostedFileBase slika)
+        public void UploadPicture(IEnumerable<HttpPostedFileBase> slika, Proizvod modelToUpdate, string opis)
         {
+
             if (slika != null)
             {
-                proizvod.ImeSlike = Path.GetFileName(slika.FileName);
+                foreach (var file in slika)
+                {
+                    if (file.ContentLength > 0)
+                    {
+                        var postojecaSlika = db.Slike.FirstOrDefault(o => o.Naziv == file.FileName && o.proizvod.Id == modelToUpdate.Id);
+                        if (postojecaSlika == null)
+                        {
+                            var sl = new Slike()
+                            {
 
-                var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvod.ImeSlikeZaPrikaz}");
-                slika.SaveAs(putanjaDoSlike);
-                
+                                Naziv = file.FileName,
+                                proizvod = modelToUpdate,
+                                Opis = opis
+
+                            };
+                            db.Slike.Add(sl);
+
+                            var putanjaDoFoldera = Server.MapPath(string.Format("~/Content/vezbaSlike/{0}{1}", modelToUpdate.Id, file.FileName));
+                            //var putanjaDoFoldera = Server.MapPath(string.Format($"~/Content/vezbaSlike/{modelToUpdate.NoImage}"));
+                            file.SaveAs(putanjaDoFoldera);
+                        }
+
+
+
+                    }
+                }
             }
         }
-
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Proizvod proizvod = db.Proizvodi.Find(id);
+            if (proizvod == null)
+            {
+                return HttpNotFound();
+            }
+            return View(proizvod);
+        }
         [Authorize(Roles = RolesConfig.ADMIN)]
         public ActionResult Edit(int id)
         {
@@ -120,7 +155,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Edit(Proizvod proizvodIzForme, HttpPostedFileBase slika)
+        public ActionResult Edit(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slika,string e)
         {
             if (ModelState.IsValid)
             {
@@ -131,7 +166,7 @@ namespace WebShop2018.Controllers
                 // dodela kategorije
                 proizvodIzBaze.Kategorija = db.Kategorije.Find(proizvodIzForme.Kategorija.Id);
 
-                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzBaze, slika);
+                UploadPicture(slika,proizvodIzForme,e);
 
                 // snimi u bazu
                 db.SaveChanges();
@@ -143,6 +178,102 @@ namespace WebShop2018.Controllers
             ViewBag.Title = "Edit";
             PostaviKategorije();
             return View("Create", proizvodIzForme);
+        }
+
+
+        public ActionResult DeletePicture(int id)
+        {
+            // uzmemo sliku koju brisemo
+            var slikaZaBrisanje = db.Slike.Find(id);
+            var proizvodId = slikaZaBrisanje.proizvod.Id;
+
+            // brisemo iz fajl sistema
+            var fileName = string.Format("{0}{1}", proizvodId, slikaZaBrisanje.Naziv);
+            var filePath = Server.MapPath($"~/Content/vezbaSlike/{fileName}");
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
+
+            // brisemo iz baze
+            db.Slike.Remove(slikaZaBrisanje);
+            db.SaveChanges();
+ 
+
+            return RedirectToAction("Details", new { id = proizvodId });
+        }
+        //get
+        public ActionResult AddPicture(int id)
+        {
+            var pro = db.Proizvodi.Find(id);
+
+            if (pro == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View("AddPicture");
+        }
+        [HttpPost]
+        public ActionResult AddPicture(int id, IEnumerable<HttpPostedFileBase> slika, string opis)
+        {
+            ViewBag.Text = "AddPicture";
+            var modelToUpdate = db.Proizvodi.Find(id);
+
+            if (ModelState.IsValid)
+            {
+
+
+                UploadPicture(slika, modelToUpdate, opis);
+                db.SaveChanges();
+
+            }
+
+            return RedirectToAction("Details", new { id = modelToUpdate.Id });
+        }
+        //get
+        public ActionResult EditPicture(int id, string ime)
+        {
+            var slika = db.Slike.Find(id);
+            var idProizvoda = slika.proizvod.Id;
+            var proizvod = db.Proizvodi.Find(idProizvoda);
+
+
+            if (proizvod == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View("EditPicture");
+        }
+        [HttpPost]
+        public ActionResult EditPicture(int id, IEnumerable<HttpPostedFileBase> slika, string opis)
+        {
+
+            //slika za brisanje
+            var slikaZaDelete = db.Slike.Find(id);
+            var idProizvoda = slikaZaDelete.proizvod.Id;
+            var proizvod = db.Proizvodi.Find(idProizvoda);
+
+            ViewBag.Text = "EditPicture";
+
+            if (ModelState.IsValid)
+            {
+
+                UploadPicture(slika, proizvod, opis);
+
+                var fileName = string.Format("{0}{1}", idProizvoda, slikaZaDelete.Naziv);
+                var filePath = Server.MapPath($"~/Content/vezbaSlike/{fileName}");
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                db.Slike.Remove(slikaZaDelete);
+                db.SaveChanges();
+                return RedirectToAction("Details", new { id = idProizvoda });
+            }
+
+            return View();
         }
 
         [Authorize(Roles = RolesConfig.ADMIN)]

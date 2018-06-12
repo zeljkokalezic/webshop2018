@@ -60,7 +60,7 @@
 {
     <tr>
         <td>
-            <img src="@string.Format("/Content/Artikli/{0}", proizvod.ImeSlikeZaPrikaz)" style="width:100px;">
+            <img src="@string.Format("/Content/vezbaSlike/{0}", proizvod.NoImage)" style="width:100px;">
         </td>
         <td>
             @proizvod.Naziv
@@ -80,10 +80,13 @@
                 @Html.ActionLink("Edit", "Edit", new { id = proizvod.Id }, new { @class = "" })
                 @Html.Raw("<br/>")
                 @Html.ActionLink("Delete", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme" })
+                @Html.Raw("<br/>")
+                @Html.ActionLink("Details", "Details", new { id = proizvod.Id })
             }
             @if (User.IsInRole(RolesConfig.USER))
             {
                 @Html.ActionLink("Dodaj u korpu", "AddToCart", new { id = proizvod.Id }, new { @class = "" })
+                @Html.ActionLink("Details", "Details", new { id = proizvod.Id }, new { @class = "" })
             }
         </td>
     </tr>
