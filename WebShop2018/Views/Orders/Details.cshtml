@@ -80,7 +80,7 @@
     {
         <tr>
             <td>
-                <img src="@string.Format("/Content/Artikli/{0}", orderLine.Item.ImeSlikeZaPrikaz)" style="width:100px;">
+                <img src="@string.Format("/Content/Artikli/{0}", orderLine.Item.Slike.FirstOrDefault(s => s.Id == orderLine.Item.SlikaZaPrikazId))" style="width:100px;">
             </td>
             <td>
                 @Html.DisplayFor(modelItem => orderLine.Item.Naziv)
@@ -89,28 +89,18 @@
                 @Html.DisplayFor(modelItem => orderLine.Price)
             </td>
             <td>
-                @if (Model.State == OrderState.Open)
+                @using (Html.BeginForm("ChangeQuantity", "Orders", FormMethod.Post))
                 {
-                    using (Html.BeginForm("ChangeQuantity", "Orders", FormMethod.Post))
-                    {
-                        <input name="id" type="hidden" value="@orderLine.Id">
-                        <input name="quantity" type="number" value="@orderLine.Quantity" min="1">
-                        <input type="submit" value="Change" class="btn" />
-                    }
-                }
-                else
-                {
-                    @orderLine.Quantity
+                    <input name="id" type="hidden" value="@orderLine.Id">
+                    <input name="quantity" type="number" value="@orderLine.Quantity" min="1">
+                    <input type="submit" value="Change" class="btn" />
                 }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => orderLine.Total)
             </td>
             <td>
-                @if (Model.State == OrderState.Open)
-                {
-                    @Html.ActionLink("Delete", "DeleteOrderLine", new { id = orderLine.Id })
-                }
+                @Html.ActionLink("Delete", "DeleteOrderLine", new { id = orderLine.Id })
             </td>
         </tr>
     }

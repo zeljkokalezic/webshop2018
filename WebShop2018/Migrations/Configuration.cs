@@ -3,6 +3,7 @@ namespace WebShop2018.Migrations
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -40,6 +41,23 @@ namespace WebShop2018.Migrations
             CreateRoleIfDoesNotExist(RolesConfig.ADMIN, roleManager);
             CreateRoleIfDoesNotExist(RolesConfig.USER, roleManager);
 
+            if (!context.Kategorije.Any())
+            {
+                var kategorije = new List<Kategorija>()
+                {
+                    new Kategorija
+                    {
+                        Naziv = "Harana"
+                    },
+                    new Kategorija
+                    {
+                        Naziv = "Pice"
+                    }
+                };
+
+                context.Kategorije.AddRange(kategorije);
+                context.SaveChanges();
+            }
 
             // Pravimo Administratora:
             // - treba nam user manager
