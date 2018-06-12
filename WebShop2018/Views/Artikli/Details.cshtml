@@ -36,16 +36,17 @@
     </dl>
 </div>
 
+
 <div>
 
     @foreach (var slika in Model.Photos)
     {
-        <img src="~/Content/Artikli/@slika.Naziv" height="100" />
+        <a class="fancy-photo" rel="group" href="~/Content/Artikli/@slika.Naziv"><img class="fancybox" src="~/Content/Artikli/@slika.Naziv" height="100" /></a>
         if (slika.Opis != null)
         {
             @Html.DisplayText(slika.Opis)
         }
-        <br/>
+        <br />
     }
 </div>
 
@@ -56,3 +57,25 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+@section Scripts{
+<script>
+    $(document).ready(function () {
+        $(".fancy-photo").fancybox({
+            cyclic: true,
+            onUpdate: function () {
+                $(".fancybox-nav span").css({
+                    visibility: "visible"
+                });
+                return;
+            },
+            afterClose: function () {
+                $(".fancybox-nav span").css({
+                    visibility: "hidden"
+                });
+                return;
+            }
+        });
+    });
+</script>
+    }
