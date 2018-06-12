@@ -31,18 +31,22 @@ namespace WebShop2018.Models
 
         public string ImeSlike { get; set; }
 
+        public virtual ICollection<Pictures> Pictures { get; set; }
+
         public string ImeSlikeZaPrikaz
         {
             get
             {
                 // nije bas najpametnije resenje
-                return string.IsNullOrWhiteSpace(ImeSlike) ? "no_image.png" : string.Format("{0}{1}", Id, ImeSlike);
+                //return string.IsNullOrWhiteSpace(ImeSlike) ? "no_image.png" : string.Format("{0}{1}", Id, ImeSlike);
+                // string.Format("~/Content/GalerijaFolder/{0}{1}", proizvodSlika.Id, picture.FileName)
+                return Pictures.Count() == 0 ? "no_image.png" : Pictures.FirstOrDefault().Naziv; 
             }
         }
 
 
         public virtual Kategorija Kategorija { get; set; }
         public virtual ICollection<Dobavljac> Dobavljaci { get; set; }
-        public virtual ICollection<Pictures> Pictures { get; set; }
+       
     }
 }

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using WebShop2018.Models;
 using System.Linq.Dynamic;
 using System.IO;
+using System.Net;
 
 namespace WebShop2018.Controllers
 {
@@ -66,7 +67,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Create(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slika, string opis)
+        public ActionResult Create(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slika)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +76,7 @@ namespace WebShop2018.Controllers
                 db.Proizvodi.Add(proizvodIzForme);
                 db.SaveChanges();
 
-                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slika);
+                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme,slika);
 
                 // drugi save changes nam snima ime slike
                 db.SaveChanges();
@@ -90,7 +91,7 @@ namespace WebShop2018.Controllers
             return View(proizvodIzForme);
         }
 
-        private void SnimiSlikuIDodeliImeSlikeProizvodu(IEnumerable<HttpPostedFileBase> slika,Proizvod proizvodSlika, string opis)
+        private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvodSlika, IEnumerable<HttpPostedFileBase> slika)
         {
             if (slika != null)
             {
@@ -107,7 +108,7 @@ namespace WebShop2018.Controllers
 
 
                                 db.Pictures.Add(new Pictures()
-                                { Naziv = picture.FileName, Proizvod = proizvodSlika, Opis = opis });
+                                { Naziv = picture.FileName, Proizvod = proizvodSlika});
 
                                 var putanjaDoSlike = Server.MapPath(string.Format("~/Content/GalerijaFolder/{0}{1}", proizvodSlika.Id, picture.FileName));
                                 picture.SaveAs(putanjaDoSlike);
@@ -122,14 +123,28 @@ namespace WebShop2018.Controllers
                 }
 
 
-
-
                 //proizvod.ImeSlike = Path.GetFileName(slika.FileName);
 
                 //var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvod.ImeSlikeZaPrikaz}");
                 //slika.SaveAs(putanjaDoSlike);
                 
             }
+        }
+
+
+          // GET: Proizvodi/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Proizvod proizvod = db.Proizvodi.Where(p => p.Id == id).FirstOrDefault();
+            if (proizvod == null)
+            {
+                return HttpNotFound();
+            }
+            return View(proizvod);
         }
 
         [Authorize(Roles = RolesConfig.ADMIN)]
@@ -150,7 +165,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Edit(Proizvod proizvodIzForme, HttpPostedFileBase slika)
+        public ActionResult Edit(Proizvod proizvodIzForme,IEnumerable<HttpPostedFileBase> slika)
         {
             if (ModelState.IsValid)
             {
@@ -161,7 +176,7 @@ namespace WebShop2018.Controllers
                 // dodela kategorije
                 proizvodIzBaze.Kategorija = db.Kategorije.Find(proizvodIzForme.Kategorija.Id);
 
-                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzBaze, slika);
+                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slika);
 
                 // snimi u bazu
                 db.SaveChanges();
