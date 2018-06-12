@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using WebShop2018.Models;
 using System.Linq.Dynamic;
 using System.IO;
+using System.Net;
 
 namespace WebShop2018.Controllers
 {
@@ -66,7 +67,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Create(Proizvod proizvodIzForme, HttpPostedFileBase slika)
+        public ActionResult Create(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slike)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +76,7 @@ namespace WebShop2018.Controllers
                 db.Proizvodi.Add(proizvodIzForme);
                 db.SaveChanges();
 
-                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slika);
+                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slike);
 
                 // drugi save changes nam snima ime slike
                 db.SaveChanges();
@@ -90,15 +91,27 @@ namespace WebShop2018.Controllers
             return View(proizvodIzForme);
         }
 
-        private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, HttpPostedFileBase slika)
+        private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, IEnumerable<HttpPostedFileBase> slike)
         {
-            if (slika != null)
+            if (slike != null)
             {
-                proizvod.ImeSlike = Path.GetFileName(slika.FileName);
+                foreach (var item in slike)
+                {
+                    if (item != null)
+                    {
+                        var slika = new Photo
+                        {
+                            Naziv = proizvod.Id + "_" + Guid.NewGuid() + "_" + item.FileName,
 
-                var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvod.ImeSlikeZaPrikaz}");
-                slika.SaveAs(putanjaDoSlike);
-                
+                            Proizvod = proizvod,
+                        };
+
+                        db.Photos.Add(slika);
+                        var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{slika.Naziv}");
+                        item.SaveAs(putanjaDoSlike);
+                    }
+
+                }
             }
         }
 
@@ -120,7 +133,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Edit(Proizvod proizvodIzForme, HttpPostedFileBase slika)
+        public ActionResult Edit(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slike)
         {
             if (ModelState.IsValid)
             {
@@ -131,7 +144,7 @@ namespace WebShop2018.Controllers
                 // dodela kategorije
                 proizvodIzBaze.Kategorija = db.Kategorije.Find(proizvodIzForme.Kategorija.Id);
 
-                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzBaze, slika);
+                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzBaze, slike);
 
                 // snimi u bazu
                 db.SaveChanges();
@@ -168,6 +181,43 @@ namespace WebShop2018.Controllers
 
             return new HttpStatusCodeResult(200);
         }
+
+
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Proizvod proizvod = db.Proizvodi.FirstOrDefault(p => p.Id == id);
+
+            if (proizvod == null)
+            {
+                return HttpNotFound();
+            }
+            return View(proizvod);
+        }
+
+
+        public ActionResult DeletePhoto(int idProizvoda, int idSlike)
+        {
+            var proizvod = db.Proizvodi.FirstOrDefault(p => p.Id == idProizvoda);
+            var slika = db.Photos.FirstOrDefault(s => s.Id == idSlike);
+            if (slika != null)
+            {
+                db.Photos.Remove(slika);
+                db.SaveChanges();
+                var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{slika.Naziv}");
+                //iz nekog razloga ne prepoznaje File bez eksplicitnog navodjenja namespace-a iako je naveden u using
+                if (System.IO.File.Exists(putanjaDoSlike))
+                {
+                    System.IO.File.Delete(putanjaDoSlike);
+                }
+            }
+            return RedirectToAction("Edit", proizvod);
+        }
+
 
         public void PostaviKategorije()
         {

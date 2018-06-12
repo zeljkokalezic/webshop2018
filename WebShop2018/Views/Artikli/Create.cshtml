@@ -5,7 +5,7 @@
 @Html.ActionLink("Back", "Index")
 
 @*moramo da stavimo encoding za formu da bi poslali slliku (enctype = "multipart/form-data")*@
-@using (Html.BeginForm((string)ViewBag.Title, "Artikli", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm((string)ViewBag.Title, "Artikli", FormMethod.Post, new { enctype = "multipart/form-data"}))
 {
     @Html.LabelFor(m => m.Naziv)
     @Html.EditorFor(m => m.Naziv)
@@ -29,11 +29,28 @@
     @Html.ValidationMessageFor(m => m.Kategorija)
 
     <br />
-    <label>Slika</label>
-    <input name="slika" type="file"accept=".jpg,.gif,.jpeg,.png"/>
-
     <br />
-    <input type="submit" value="Save"/>
+
+    <label>Dodaj slike</label>
+    <input name="slike" type="file" accept="image/*" multiple="multiple" />
+   
+
+    if (ViewBag.Title == "Edit" && Model.Photos != null)
+    {
+        foreach (var slika in Model.Photos)
+        {
+            <br />
+            @Html.ActionLink("Obrisi", "DeletePhoto", new { idProizvoda = Model.Id, idSlike = slika.Id }, new { @class = "btn glyphicon glyphicon-remove" })
+            <img src="~/Content/Artikli/@slika.Naziv" alt="@slika.Opis" height="100" />
+            @Html.DisplayNameFor(model => slika.Opis)
+            @Html.Raw(": ")
+            @Html.TextAreaFor(model => slika.Opis)
+            <br />
+        }
+    }
+    <br />
+
+    <input type="submit" value="Save" />
 }
 
 @section Scripts {
