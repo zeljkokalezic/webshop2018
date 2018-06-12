@@ -30,11 +30,16 @@ namespace WebShop2018.Models
         [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
         public decimal Cena { get; set; }
 
+        [Required(ErrorMessage = "Opis mora da se navede")]
+        [StringLength(100)]
+        [DisplayName("Opis")]
+        public string Opis { get; set; }
+
         public virtual Kategorija Kategorija { get; set; }
         public virtual ICollection<Dobavljac> Dobavljaci { get; set; }
         public virtual ICollection<Slika> Slike { get; set; }
-        //opis
-        public virtual Opis Opis{ get; set; }
+        
+       
 
         public int? SlikaZaPrikazId { get; set; }
     }

@@ -16,11 +16,13 @@ namespace WebShop2018.ViewModels
 
         public decimal Cena { get; set; }
 
+        public string Opis { get; set; }
+
         public virtual Kategorija Kategorija { get; set; }
         public virtual ICollection<Dobavljac> Dobavljaci { get; set; }
         public virtual ICollection<Slika> Slike { get; set; }
 
         public string SlikaZaPrikaz { get; set; }
-        public Opis Opis { get; internal set; }
+        
     }
 }

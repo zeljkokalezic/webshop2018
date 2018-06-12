@@ -24,7 +24,7 @@
     @Html.ValidationMessageFor(m => m.Kategorija)
     <br />
 
-    
+
 
     if (ViewBag.Title == "Edit" && Model.Slike != null)
     {
@@ -46,9 +46,11 @@
 
     <br />
     //opiss
-        <label>Opis</label>
-        <textarea name="message" rows="10" cols="30"></textarea>
-
+    @*<label>Opis</label>
+        <textarea name="message" rows="10" cols="30"></textarea>*@
+    @Html.LabelFor(m => m.Opis)
+    @Html.EditorFor(m => m.Opis)
+    @Html.ValidationMessageFor(m => m.Opis)
     <br />
     <input type="submit" value="Save" />
 }
