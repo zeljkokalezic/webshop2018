@@ -27,6 +27,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.1</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -245,6 +246,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderLine.cs" />
+    <Compile Include="Models\Pictures.cs" />
     <Compile Include="Models\Proizvod.cs" />
     <Compile Include="Models\RolesConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -617,6 +619,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Artikli\" />
+    <Folder Include="Content\GalerijaFolder\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

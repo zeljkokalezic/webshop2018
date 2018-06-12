@@ -66,7 +66,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Create(Proizvod proizvodIzForme, HttpPostedFileBase slika)
+        public ActionResult Create(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slika, string opis)
         {
             if (ModelState.IsValid)
             {
@@ -90,14 +90,44 @@ namespace WebShop2018.Controllers
             return View(proizvodIzForme);
         }
 
-        private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, HttpPostedFileBase slika)
+        private void SnimiSlikuIDodeliImeSlikeProizvodu(IEnumerable<HttpPostedFileBase> slika,Proizvod proizvodSlika, string opis)
         {
             if (slika != null)
             {
-                proizvod.ImeSlike = Path.GetFileName(slika.FileName);
+                foreach (var picture in slika)
+                {
+                    {
+                        if (picture.ContentLength > 0)
+                        {
 
-                var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvod.ImeSlikeZaPrikaz}");
-                slika.SaveAs(putanjaDoSlike);
+                            var samePicture = db.Pictures.FirstOrDefault(p => p.Naziv == picture.FileName && p.Proizvod.Id == proizvodSlika.Id);
+
+                            if (samePicture == null)
+                            {
+
+
+                                db.Pictures.Add(new Pictures()
+                                { Naziv = picture.FileName, Proizvod = proizvodSlika, Opis = opis });
+
+                                var putanjaDoSlike = Server.MapPath(string.Format("~/Content/GalerijaFolder/{0}{1}", proizvodSlika.Id, picture.FileName));
+                                picture.SaveAs(putanjaDoSlike);
+                                
+                            }
+
+
+                        }
+
+                        
+                    }
+                }
+
+
+
+
+                //proizvod.ImeSlike = Path.GetFileName(slika.FileName);
+
+                //var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvod.ImeSlikeZaPrikaz}");
+                //slika.SaveAs(putanjaDoSlike);
                 
             }
         }
