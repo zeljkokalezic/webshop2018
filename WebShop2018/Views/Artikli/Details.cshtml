@@ -66,20 +66,26 @@
         @Html.DisplayFor(modelItem => images.ImeSlikeZaPrikaz)
         <hr>
         <br>
+        <p class="row text-center text-danger">
+            @Html.DisplayFor(modelItem => images.Description)
+        </p>
+       
+        <hr>
+        <br>
 
         <a class="example-image-link" href="@string.Format("/Content/Artikli/{0}", images.ImeSlikeZaPrikaz)" data-lightbox="example-set">
             <img class="example-image img-thumbnail" src="@string.Format("/Content/Artikli/{0}", images.ImeSlikeZaPrikaz)" style="width:200px;">
-            
-        </a>    
-            
-            <br>
 
-            <hr>
-            @if (User.IsInRole(RolesConfig.ADMIN))
-        {
-            <p>Obrisi sliku !</p>
-            @Html.ActionLink(" ", "Delete", "Images", new { id = images.Id }, new { @class = "text-danger glyphicon glyphicon-remove btn btn-default btn-sm" })
-    }
+        </a>
+
+        <br>
+
+        <hr>
+        @if (User.IsInRole(RolesConfig.ADMIN))
+    {
+        <p>Obrisi sliku !</p>
+        @Html.ActionLink(" ", "Delete", "Images", new { id = images.Id }, new { @class = "text-danger glyphicon glyphicon-remove btn btn-default btn-sm" })
+}
 
     </div>
 

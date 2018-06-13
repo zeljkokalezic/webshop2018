@@ -22,8 +22,9 @@
         <th>
             @Html.DisplayNameFor(model => model.ImeSlikeZaPrikaz)
         </th>
+       
         <th>
-            Za Proizvod:
+            @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
 
@@ -33,24 +34,26 @@
 
     @foreach (var image in Model)
     {
-    <tr>
-        <td>
-            @image.ImageName
-        </td>
+        <tr>
+            <td>
+                @image.ImageName
+            </td>
 
-        <td>
-            @image.ImeSlikeZaPrikaz
-        </td>
-        <td>
-            @Html.DisplayFor(i => image.Proizvod.Naziv)
-        </td>
+            <td>
+                @image.ImeSlikeZaPrikaz
+            </td>
+           
+            <td>
+               
+                @image.Description
+            </td>
 
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = image.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = image.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = image.Id })
-        </td>
-    </tr>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = image.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = image.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = image.Id })
+            </td>
+        </tr>
     }
 
 </table>

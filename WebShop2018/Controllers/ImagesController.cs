@@ -134,7 +134,7 @@ namespace WebShop2018.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ImageName,Proizvod")] Image image)
+        public ActionResult Edit([Bind(Include = "Id,ImageName,Proizvod,Description")] Image image)
         {
             if (ModelState.IsValid)
             {

@@ -236,6 +236,10 @@
     <Compile Include="Migrations\201806040703237_AddImageClass.Designer.cs">
       <DependentUpon>201806040703237_AddImageClass.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806131055409_AddDescriptionAtr.cs" />
+    <Compile Include="Migrations\201806131055409_AddDescriptionAtr.Designer.cs">
+      <DependentUpon>201806131055409_AddDescriptionAtr.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ArtikliGridViewModel.cs" />
@@ -403,6 +407,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806040703237_AddImageClass.resx">
       <DependentUpon>201806040703237_AddImageClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806131055409_AddDescriptionAtr.resx">
+      <DependentUpon>201806131055409_AddDescriptionAtr.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
