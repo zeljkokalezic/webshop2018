@@ -250,7 +250,6 @@
     <Compile Include="Models\Proizvod.cs" />
     <Compile Include="Models\RolesConfig.cs" />
     <Compile Include="Models\Slika.cs" />
-    <Compile Include="Models\SlikeGridViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

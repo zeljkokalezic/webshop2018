@@ -40,16 +40,18 @@
 <br />
 
 <div class="container">
-    <div class="row">
-        @foreach (var slika in Model.Slike)
-        {
-            <div class="col-md-3" style="margin-bottom:100px; text-align:center;">
-                <img src="@string.Format("/Content/Artikli/{0}", slika.NazivSlikeZaPrikaz)" style="width:60%;">
-                <p style="margin-top:10px;">@Html.DisplayFor(s => slika.OpisSlike)</p>
-            </div>
-        }
+        <div class="row">
+            @foreach (var slika in Model.Slike)
+            {
+                <div class="col-md-3" style="margin-bottom:100px; text-align:center;">
+                    <img src="@string.Format("/Content/Artikli/{0}", slika.NazivSlikeZaPrikaz)" style="width:60%;">
+                    <p style="margin-top:10px;">@Html.DisplayFor(s => slika.OpisSlike)</p>
+                </div>
+            }
+        </div>
     </div>
-</div>
+
+
 
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
@@ -58,6 +60,4 @@
 
 
 @section Scripts{
-    <script>
-    </script>    
 }

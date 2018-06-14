@@ -1,4 +1,5 @@
-﻿@model WebShop2018.Models.Proizvod
+﻿@using WebShop2018.Models
+@model WebShop2018.Models.Proizvod
 
 <h2>@ViewBag.Title</h2>
 
@@ -33,7 +34,7 @@
     <div class="form-group">
         <label class="control-label">Dodaj sliku</label>
         <div>
-            <input type="file" name="slika" accept=".jpg,.gif,.jpeg,.png" multiple />
+            <input type="file" name="listaSlika" accept=".jpg,.gif,.jpeg,.png" multiple />
         </div>
     </div>
     <br />
@@ -43,21 +44,38 @@
     </div>
 }
 
-    <div class="container">
-        <div class="row">
-            @foreach (var slika in Model.Slike)
-            {
-                <div class="col-md-3">
-                    <div style="padding:50px;">
-                        <img src="@string.Format("/Content/Artikli/{0}", slika.NazivSlikeZaPrikaz)" style="width:100%;">
-                        <p style="text-align:center; margin-top:10px;">@Html.DisplayFor(s => slika.NazivSlike)</p>
-                        <input type="button" value="Obrisi" onclick="location.href='@Url.Action("Delete", "Slike", new { id = slika.Id })'" style="margin:20px 0; font-size:15px;" />
-                        <input type="button" value="Dodaj opis" onclick="location.href='@Url.Action("Edit", "Slike", new { id = slika.Id, proizvodId = Model.Id })'" style="margin:20px 0; font-size:15px; float:right;" />
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
+<table class="table tabelaSlike">
+    <tr>
+        <th></th>
+        <th>
+            Naziv slike
+        </th>
+        <th>
+            Opis slike
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Slike)
+    {
+        <tr>
+            <td>
+                <img src="@string.Format("/Content/Artikli/{0}", item.NazivSlikeZaPrikaz)" style="width:100px;">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NazivSlike)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpisSlike)
+            </td>
+            <td>
+                @Html.ActionLink("Dodaj opis", "Edit", "Slike", new { id = item.Id, proizvodId = Model.Id }, null) |
+                @Html.ActionLink("Obrisi", "Delete", "Slike", new { id = item.Id, proizvodId = Model.Id }, null)
+            </td>
+        </tr>
+    }
+
+</table>
 
 
 <br />

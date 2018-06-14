@@ -82,9 +82,8 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Create(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slika)
+        public ActionResult Create(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> listaSlika)
         {
-            //var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
                 //snimanje u bazu
@@ -92,8 +91,7 @@ namespace WebShop2018.Controllers
                 db.Proizvodi.Add(proizvodIzForme);
                 db.SaveChanges();
 
-                //SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slike);
-                SnimiSliku(proizvodIzForme, slika);
+                SnimiSliku(proizvodIzForme, listaSlika);
 
                 // drugi save changes nam snima ime slike
                 db.SaveChanges();
@@ -133,94 +131,6 @@ namespace WebShop2018.Controllers
             }
         }
 
-        //private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, IEnumerable<HttpPostedFileBase> slika)
-        //{
-        //    if (slika != null)
-        //    {
-        //        var listaSlika = slika.ToList();
-        //        //stavljamo flag da nam ne bi u index view stalno ubacivao poslednju upload-ovanu sliku
-        //        //na taj nacin pozivamo drugu funkciju u else grani
-        //        var flag = true;
-        //        foreach(var sl in listaSlika)
-        //        {
-        //            if (flag)
-        //            {
-        //                //proizvod.ImeSlike = Path.GetFileName(sl.FileName);
-        //                //var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvod.ImeSlikeZaPrikaz}");
-        //                //sl.SaveAs(putanjaDoSlike);
-
-        //                //var slikaZaBazu = new Slika()
-        //                //{
-        //                //    NazivSlike = proizvod.ImeSlikeZaPrikaz
-        //                //};
-
-        //                var proizvodIzBaze = db.Proizvodi.Find(proizvod.Id);
-
-        //                //da ne bi mogle da se ubace slike koje vec postoje u bazi
-        //                //neki uslov...
-        //                //if (proizvod.Slike.FirstOrDefault(s => s.NazivSlike == s.Proizvod.ImeSlikeZaPrikaz) == null)
-        //                //{
-        //                //    slikaZaBazu.Proizvod = proizvod;
-        //                //    db.Slike.Add(slikaZaBazu);
-
-        //                //    flag = false;
-        //                //}
-        //                //slikaZaBazu.Proizvod = proizvodIzBaze;
-        //                //db.Slike.Add(slikaZaBazu);
-
-        //            flag = false;
-        //        }
-        //            else
-        //            {
-        //                //Pravimo drugu funkciju jer bez nje uvek se u listi proizvoda(index view) prikazuje
-        //                //poslednja upoladovana slika, jer se stalno menja property ImeSlikeZaPrikaz.Umesto tog
-        //                //property - ja u toj drugoj funkciji pozivamo funkciju ImeSlikeZaBazu
-        //                SnimiSlikuUBazu(proizvod, slika);
-        //            }
-
-        //        }
-        //    }
-        //}
-
-        //private string ImeSlikeZaBazu(Proizvod proizvod, string nazivSlike)
-        //{
-        //    return string.Empty;
-        //    //return string.IsNullOrWhiteSpace(proizvod.ImeSlike) ? "no_image.png" : string.Format("{0}{1}", proizvod.Id, nazivSlike);
-        //}
-
-        //private void SnimiSlikuUBazu(Proizvod proizvod, IEnumerable<HttpPostedFileBase> slika)
-        //{
-        //    if (slika != null)
-        //    {
-        //        foreach (var sl in slika)
-        //        {
-        //            string nazivSlike = Path.GetFileName(sl.FileName);
-
-        //            var slikaPostoji = proizvod.Slike.Any(s => s.NazivSlike == nazivSlike);
-
-        //            if (!slikaPostoji)
-        //            {
-
-        //            }
-
-        //            //var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{ImeSlikeZaBazu(proizvod, nazivSlike)}");
-        //            //sl.SaveAs(putanjaDoSlike);
-
-        //            //var slikaZaBazu = new Slika()
-        //            //{
-        //            //    NazivSlike = ImeSlikeZaBazu(proizvod, nazivSlike)
-        //            //};
-
-        //            ////if (proizvod.ImeSlikeZaPrikaz != slikaZaBazu.NazivSlike)
-        //            ////{
-        //            ////    proizvod = db.Proizvodi.Find(proizvod.Id);
-        //            ////    slikaZaBazu.Proizvod = proizvod;
-        //            ////    db.Slike.Add(slikaZaBazu);
-        //            ////}
-        //        }
-        //    }
-        //}
-
         [Authorize(Roles = RolesConfig.ADMIN)]
         public ActionResult Edit(int id)
         {
@@ -239,7 +149,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Edit(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slika)
+        public ActionResult Edit(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> listaSlika)
         {
             if (ModelState.IsValid)
             {
@@ -250,8 +160,7 @@ namespace WebShop2018.Controllers
                 // dodela kategorije
                 proizvodIzBaze.Kategorija = db.Kategorije.Find(proizvodIzForme.Kategorija.Id);
 
-                //SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzBaze, slika);
-                SnimiSliku(proizvodIzBaze, slika);
+                SnimiSliku(proizvodIzBaze, listaSlika);
 
                 // snimi u bazu
                 db.SaveChanges();

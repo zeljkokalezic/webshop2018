@@ -15,47 +15,10 @@ namespace WebShop2018.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Slike
-        //[Authorize(Roles = RolesConfig.ADMIN)]
-        //public ActionResult Index(SlikeGridViewModel viewModel)
-        //{
-        //    IQueryable<Slika> slike = db.Slike;
-        //    if (viewModel.Query != null)
-        //    {
-        //        // daj sve proizvode gde ime sadrzi ovaj query parametar
-        //        slike = slike.Where(s => s.NazivSlike.Contains(viewModel.Query));
-        //    }
-
-        //    if (viewModel.SortBy != null && viewModel.SortDirection != null)
-        //    {
-        //        // sortiranje koriscenjem Linq.Dynamic
-        //        slike = slike.OrderBy(string.Format("{0} {1}", viewModel.SortBy, viewModel.SortDirection));
-        //    }
-
-        //    // paging
-        //    slike = slike.Skip((viewModel.Page - 1) * viewModel.PageSize).Take(viewModel.PageSize);
-
-        //    // vrati podatke iz baze :)
-        //    viewModel.Slike = slike.ToList();
-
-        //    return View(viewModel);
-        //}
-
-        // GET: Slike
-        [Authorize(Roles = RolesConfig.ADMIN)]
+        //GET: Slike
+       [Authorize(Roles = RolesConfig.ADMIN)]
         public ActionResult Index()
         {
-            //var slikeIzBaze = db.Slike.ToList();
-
-            //foreach(var slika in slikeIzBaze)
-            //{
-            //    var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{slika.NazivSlikeZaPrikaz}");
-            //    if (putanjaDoSlike.Length > 0)
-            //    {
-
-            //    }
-            //}
-
             return View(db.Slike.ToList());
         }
 
@@ -79,7 +42,6 @@ namespace WebShop2018.Controllers
         [Authorize(Roles = RolesConfig.ADMIN)]
         public ActionResult Create()
         {
-            PostaviProizvode();
             return View();
         }
 
@@ -89,47 +51,16 @@ namespace WebShop2018.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Create(IEnumerable<HttpPostedFileBase> slika, Proizvod proizvod)
+        public ActionResult Create(Slika slika)
         {
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                SnimiSliku(proizvod, slika);
                 db.SaveChanges();
 
                 return View("Index", "Artikli");
             }
 
             return RedirectToAction("Index");
-        }
-
-        public void SnimiSliku(Proizvod proizvod, IEnumerable<HttpPostedFileBase> slika)
-        {
-            if (slika != null)
-            {
-                foreach (var sl in slika)
-                {
-                    var slikaZaBazu = new Slika()
-                    {
-                        NazivSlike = Path.GetFileName(sl.FileName),
-                        Proizvod = db.Proizvodi.Find(proizvod.Id)
-                        //Proizvod=proizvod
-                    };
-
-                    //slikaZaBazu.Proizvod = db.Proizvodi.Find(slikaZaBazu.Proizvod.Id);
-
-                    db.Slike.Add(slikaZaBazu);
-                    db.SaveChanges();
-
-                    var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{slikaZaBazu.NazivSlikeZaPrikaz}");
-                    sl.SaveAs(putanjaDoSlike);
-                }
-            }
-        }
-
-        public void PostaviProizvode()
-        {
-            ViewBag.Proizvodi = db.Proizvodi.ToList();
         }
 
         // GET: Slike/Edit/5
@@ -193,20 +124,29 @@ namespace WebShop2018.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id, int? proizvodId)
         {
             Slika slika = db.Slike.Find(id);
-            int idProizvoda = slika.Proizvod.Id;
 
+            //brisemo najpre iz Content foldera
             var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{slika.NazivSlikeZaPrikaz}");
 
             if (System.IO.File.Exists(putanjaDoSlike))
             {
                 System.IO.File.Delete(putanjaDoSlike);
             }
+
             db.Slike.Remove(slika);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            if (proizvodId.HasValue)
+            {
+                return RedirectToAction("Edit", "Artikli", new { id = proizvodId });
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         protected override void Dispose(bool disposing)
