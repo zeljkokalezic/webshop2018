@@ -9225,3 +9225,9 @@ body {
   font-size: 8px;
   line-height: 8px;
 }
+
+.thumbnail {
+    height: 100px;
+    margin: 10px;
+}
+

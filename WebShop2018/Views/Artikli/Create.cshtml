@@ -5,7 +5,7 @@
 @Html.ActionLink("Back", "Index")
 
 @*moramo da stavimo encoding za formu da bi poslali slliku (enctype = "multipart/form-data")*@
-@using (Html.BeginForm((string)ViewBag.Title, "Artikli", FormMethod.Post, new { enctype = "multipart/form-data"}))
+@using (Html.BeginForm((string)ViewBag.Title, "Artikli", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.LabelFor(m => m.Naziv)
     @Html.EditorFor(m => m.Naziv)
@@ -31,9 +31,13 @@
     <br />
     <br />
 
-    <label>Dodaj slike</label>
-    <input name="slike" type="file" accept="image/*" />
-
+    <div>
+        <label for="files">Dodaj slike: </label>
+        <input name="slike" id="files" type="file" multiple />
+        <br/>
+        <output id="result" />
+    </div>
+    
 
     if (ViewBag.Title == "Edit" && Model.Photos != null)
     {
@@ -55,4 +59,52 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        window.onload = function () {
+
+            //Check File API support
+            if (window.File && window.FileList && window.FileReader) {
+                var filesInput = document.getElementById("files");
+                
+                filesInput.addEventListener("change", function (event) {
+
+                    var files = event.target.files; //FileList object                   
+                    var output = document.getElementById("result");
+
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i];
+
+                        //Only pics
+                        if (!file.type.match('image'))
+                            continue;
+
+                        var picReader = new FileReader();
+
+                        picReader.addEventListener("load", function (event) {
+
+                            var picFile = event.target;
+
+                            var div = document.createElement("div");
+
+                            div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "' " +
+                                " title='" + picFile.name + "' />Description: <input type='text'></input>";
+
+                            output.insertBefore(div, null);
+
+                        });
+
+                        //Read the image
+                        picReader.readAsDataURL(file);
+                    }
+
+                });
+            }
+            else {
+                console.log("Your browser does not support File API");
+            }
+        }
+    </script>
+
+
 }
