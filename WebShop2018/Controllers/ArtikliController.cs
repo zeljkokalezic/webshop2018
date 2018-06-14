@@ -66,7 +66,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Create(Proizvod proizvodIzForme, HttpPostedFileBase slika)
+        public ActionResult Create(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slika)
         {
             if (ModelState.IsValid)
             {
@@ -90,16 +90,28 @@ namespace WebShop2018.Controllers
             return View(proizvodIzForme);
         }
 
-        private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, HttpPostedFileBase slika)
+        private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, IEnumerable<HttpPostedFileBase> slike)
         {
-            if (slika != null)
+            foreach(var slika in slike)
             {
-                proizvod.ImeSlike = Path.GetFileName(slika.FileName);
+                if (slika != null)
+                {
+                    var dodata = new Slika
+                    {
+                        Naziv = slika.FileName
+                    };
 
-                var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvod.ImeSlikeZaPrikaz}");
-                slika.SaveAs(putanjaDoSlike);
-                
+                    proizvod.Slike.Add(dodata);
+
+                    db.Slike.Add(dodata);
+
+                    var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{dodata.Naziv}");
+                    slika.SaveAs(putanjaDoSlike);
+                    db.SaveChanges();
+
+                }
             }
+            
         }
 
         [Authorize(Roles = RolesConfig.ADMIN)]
@@ -120,7 +132,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Edit(Proizvod proizvodIzForme, HttpPostedFileBase slika)
+        public ActionResult Edit(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slika)
         {
             if (ModelState.IsValid)
             {
