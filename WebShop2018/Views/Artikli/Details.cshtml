@@ -1,0 +1,82 @@
+﻿@model WebShop2018.Models.Proizvod
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Proizvod</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Stanje)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Stanje)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Naziv)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Naziv)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cena)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cena)
+        </dd>
+    </dl>
+</div>
+
+
+<div>
+
+    @foreach (var slika in Model.Photos)
+    {
+        <a class="fancy-photo" rel="group" href="~/Content/Artikli/@slika.Naziv"><img class="fancybox" src="~/Content/Artikli/@slika.Naziv" height="100" /></a>
+        
+        if (slika.Opis != null)
+        {
+            @Html.DisplayName(slika.Opis)
+        }
+        <br />
+    }
+</div>
+
+
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+@section Scripts{
+<script>
+    $(document).ready(function () {
+        $(".fancy-photo").fancybox({
+            cyclic: true,
+            onUpdate: function () {
+                $(".fancybox-nav span").css({
+                    visibility: "visible"
+                });
+                return;
+            },
+            afterClose: function () {
+                $(".fancybox-nav span").css({
+                    visibility: "hidden"
+                });
+                return;
+            }
+        });
+    });
+</script>
+    }

@@ -5,7 +5,7 @@
 @Html.ActionLink("Back", "Index")
 
 @*moramo da stavimo encoding za formu da bi poslali slliku (enctype = "multipart/form-data")*@
-@using (Html.BeginForm((string)ViewBag.Title, "Artikli", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm((string)ViewBag.Title, "Artikli", FormMethod.Post, new { enctype = "multipart/form-data"}))
 {
     @Html.LabelFor(m => m.Naziv)
     @Html.EditorFor(m => m.Naziv)
@@ -29,13 +29,83 @@
     @Html.ValidationMessageFor(m => m.Kategorija)
 
     <br />
-    <label>Slika</label>
-    <input name="slika" type="file"accept=".jpg,.gif,.jpeg,.png"/>
-
     <br />
-    <input type="submit" value="Save"/>
+
+    <div>
+        <label for="files">Dodaj slike: </label>
+        <input name="slike" id="files" type="file" multiple />
+        <br />
+        <output id="result" />
+    </div>
+
+
+    if (ViewBag.Title == "Edit" && Model.Photos != null)
+    {
+        foreach (var slika in Model.Photos)
+        {
+            <br />
+            @Html.ActionLink("Obrisi", "DeletePhoto", new { idProizvoda = Model.Id, idSlike = slika.Id }, new { @class = "glyphicon glyphicon-remove" })
+            <img src="~/Content/Artikli/@slika.Naziv" alt="@slika.Opis" height="100" />
+            @Html.DisplayNameFor(model => slika.Opis)
+            @Html.Raw(": ")
+            @Html.TextAreaFor(model => slika.Opis)
+            <br />
+        }
+    }
+    <br />
+
+    <input type="submit" value="Save" />
 }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script>
+        window.onload = function () {
+
+            //Check File API support
+            if (window.File && window.FileList && window.FileReader) {
+                var filesInput = document.getElementById("files");
+
+                filesInput.addEventListener("change", function (event) {
+
+                    var files = event.target.files; //FileList object
+                    var output = document.getElementById("result");
+
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i];
+
+                        //Only pics
+                        if (!file.type.match('image'))
+                            continue;
+
+                        var picReader = new FileReader();
+
+                        picReader.addEventListener("load", function (event) {
+
+                            var picFile = event.target;
+
+                            var div = document.createElement("div");
+
+                            div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "' " +
+                                " title='" + picFile.name + "' />Opis: <input type='text' name='opisi' ></input > ";
+
+                            output.insertBefore(div, null);
+
+                        });
+
+                        //Read the image
+                        picReader.readAsDataURL(file);
+                    }
+
+                });
+            }
+            else {
+                console.log("Your browser does not support File API");
+            }
+        }
+    </script>
+
+
 }

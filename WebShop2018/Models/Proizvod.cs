@@ -29,19 +29,14 @@ namespace WebShop2018.Models
         [Range(0.00, 10000.00)]
         public decimal Cena { get; set; }
 
-        public string ImeSlike { get; set; }
-
-        public string ImeSlikeZaPrikaz
-        {
-            get
-            {
-                // nije bas najpametnije resenje
-                return string.IsNullOrWhiteSpace(ImeSlike) ? "no_image.png" : string.Format("{0}{1}", Id, ImeSlike);
-            }
-        }
-
-
         public virtual Kategorija Kategorija { get; set; }
         public virtual ICollection<Dobavljac> Dobavljaci { get; set; }
+
+        public virtual ICollection<Photo> Photos { get; set; }
+
+        public string GlavnaSlikaNaziv
+        {
+            get { return Photos.Count() == 0 ? "no_image.png" : Photos.FirstOrDefault().Naziv; }
+        }
     }
 }
