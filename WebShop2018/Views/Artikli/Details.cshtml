@@ -42,9 +42,10 @@
     @foreach (var slika in Model.Photos)
     {
         <a class="fancy-photo" rel="group" href="~/Content/Artikli/@slika.Naziv"><img class="fancybox" src="~/Content/Artikli/@slika.Naziv" height="100" /></a>
+        
         if (slika.Opis != null)
         {
-            @Html.DisplayText(slika.Opis)
+            @Html.DisplayName(slika.Opis)
         }
         <br />
     }

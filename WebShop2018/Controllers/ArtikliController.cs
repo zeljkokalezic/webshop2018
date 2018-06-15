@@ -67,7 +67,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Create(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slike)
+        public ActionResult Create(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slike, string[] opisi)
         {
             if (ModelState.IsValid)
             {
@@ -76,7 +76,7 @@ namespace WebShop2018.Controllers
                 db.Proizvodi.Add(proizvodIzForme);
                 db.SaveChanges();
 
-                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slike);
+                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slike, opisi);
 
                 // drugi save changes nam snima ime slike
                 db.SaveChanges();
@@ -91,10 +91,11 @@ namespace WebShop2018.Controllers
             return View(proizvodIzForme);
         }
 
-        private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, IEnumerable<HttpPostedFileBase> slike)
+        private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, IEnumerable<HttpPostedFileBase> slike, string[] opisi)
         {
             if (slike != null)
             {
+                int i = 0;
                 foreach (var item in slike)
                 {
                     if (item != null)
@@ -102,13 +103,14 @@ namespace WebShop2018.Controllers
                         var slika = new Photo
                         {
                             Naziv = proizvod.Id + "_" + Guid.NewGuid() + "_" + item.FileName,
-
+                            Opis = opisi[i],
                             Proizvod = proizvod,
                         };
 
                         db.Photos.Add(slika);
                         var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{slika.Naziv}");
                         item.SaveAs(putanjaDoSlike);
+                        i++;
                     }
 
                 }
@@ -133,7 +135,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Edit(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slike)
+        public ActionResult Edit(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slike, string[] opisi)
         {
             if (ModelState.IsValid)
             {
@@ -144,7 +146,7 @@ namespace WebShop2018.Controllers
                 // dodela kategorije
                 proizvodIzBaze.Kategorija = db.Kategorije.Find(proizvodIzForme.Kategorija.Id);
 
-                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzBaze, slike);
+                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzBaze, slike, opisi);
 
                 // snimi u bazu
                 db.SaveChanges();
