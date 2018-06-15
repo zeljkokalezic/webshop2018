@@ -1,0 +1,93 @@
+﻿@using WebShop2018.Models
+@model WebShop2018.Models.Proizvod
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("Back", "Index")
+
+@*moramo da stavimo encoding za formu da bi poslali slliku (enctype = "multipart/form-data")*@
+@using (Html.BeginForm((string)ViewBag.Title, "Artikli", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.LabelFor(m => m.Naziv)
+    @Html.EditorFor(m => m.Naziv)
+    @Html.ValidationMessageFor(m => m.Naziv)
+
+    <br />
+    @Html.LabelFor(m => m.Cena)
+    @Html.EditorFor(m => m.Cena)
+    @Html.ValidationMessageFor(m => m.Cena)
+
+    <br />
+    @Html.LabelFor(m => m.Stanje)
+    @Html.EnumDropDownListFor(m => m.Stanje)
+    @Html.ValidationMessageFor(m => m.Stanje)
+
+    <br />
+    @Html.LabelFor(m => m.Kategorija)
+    @Html.DropDownListFor(m => m.Kategorija.Id,
+                            new SelectList(ViewBag.Kategorije, "Id", "Naziv")
+                          )
+    @Html.ValidationMessageFor(m => m.Kategorija)
+
+    <br />
+
+    <div class="form-group">
+        <label class="control-label">Dodaj sliku</label>
+        <div>
+            <input type="file" name="listaSlika" accept=".jpg,.gif,.jpeg,.png" multiple />
+        </div>
+    </div>
+    <br />
+
+    <div class="col-md-12" style="margin-bottom:50px;">
+        <input type="submit" value="Save" />
+    </div>
+}
+
+<table class="table tabelaSlike">
+    <tr>
+        <th></th>
+        <th>
+            Naziv slike
+        </th>
+        <th>
+            Opis slike
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var slika in Model.Slike)
+    {
+        <tr>
+            <td>
+                <img src="@string.Format("/Content/Artikli/{0}", slika.NazivSlikeZaPrikaz)" style="width:100px;">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => slika.NazivSlike)
+            </td>
+            <td>
+                @using (Html.BeginForm("DodajOpis", "Artikli", FormMethod.Post))
+                {
+                    <input name="id" type="hidden" value="@slika.Id">
+                    <input name="opisSlike" type="text" value="@slika.OpisSlike" min="1">
+                    <input type="submit" value="Dodaj opis" class="btn btn-primary" />
+                }
+            </td>
+            <td>
+                @using (Html.BeginForm("ObrisiSliku", "Artikli", FormMethod.Post))
+                {
+                    <input name="id" type="hidden" value="@slika.Id">
+                    <input type="submit" value="Obrisi" class="btn btn-danger" />
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

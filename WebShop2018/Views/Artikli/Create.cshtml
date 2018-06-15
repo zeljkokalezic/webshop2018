@@ -28,12 +28,15 @@
                           )
     @Html.ValidationMessageFor(m => m.Kategorija)
 
-    <br />
-    <label>Slika</label>
-    <input name="slika" type="file"accept=".jpg,.gif,.jpeg,.png"/>
+    <div class="form-group">
+        <label class="control-label col-md-2">Dodaj sliku</label>
+        <div class="col-md-10">
+            <input type="file" name="listaSlika" accept=".jpg,.gif,.jpeg,.png" multiple />
+        </div>
+    </div>
 
     <br />
-    <input type="submit" value="Save"/>
+    <input type="submit" value="Save" id="submitDugme" />
 }
 
 @section Scripts {

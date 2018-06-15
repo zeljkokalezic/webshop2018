@@ -29,19 +29,18 @@ namespace WebShop2018.Models
         [Range(0.00, 10000.00)]
         public decimal Cena { get; set; }
 
-        public string ImeSlike { get; set; }
-
-        public string ImeSlikeZaPrikaz
+        // ovo nam treba za grid
+        public string PodrazumevanaSlika
         {
             get
             {
-                // nije bas najpametnije resenje
-                return string.IsNullOrWhiteSpace(ImeSlike) ? "no_image.png" : string.Format("{0}{1}", Id, ImeSlike);
+                return Slike.Count == 0 ? "no_image.png" : Slike.First().NazivSlikeZaPrikaz;
             }
         }
 
 
         public virtual Kategorija Kategorija { get; set; }
         public virtual ICollection<Dobavljac> Dobavljaci { get; set; }
+        public virtual ICollection<Slika> Slike { get; set; }
     }
 }

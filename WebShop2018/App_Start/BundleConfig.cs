@@ -30,6 +30,12 @@ namespace WebShop2018
             bundles.Add(new StyleBundle("~/Content/theme").Include(
                       "~/Content/bootstrap-theme.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/lightboxcss").Include(
+                      "~/Content/jquery.fancybox.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/lightboxjs").Include(
+                      "~/Scripts/jquery.fancybox.js"));
         }
     }
 }

@@ -27,6 +27,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.1</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -211,6 +212,7 @@
     <Compile Include="Controllers\OnlineDobavljacsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProizvodiController.cs" />
+    <Compile Include="Controllers\SlikeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -247,6 +249,7 @@
     <Compile Include="Models\OrderLine.cs" />
     <Compile Include="Models\Proizvod.cs" />
     <Compile Include="Models\RolesConfig.cs" />
+    <Compile Include="Models\Slika.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -415,6 +418,7 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\jquery.fancybox.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -532,6 +536,7 @@
     <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.0.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.fancybox.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -593,8 +598,6 @@
     <Content Include="Views\OnlineDobavljacs\Index.cshtml" />
     <Content Include="Views\Home\Primer.cshtml" />
     <Content Include="Views\Shared\_Navigacija.cshtml" />
-    <Content Include="Views\Artikli\Index.cshtml" />
-    <Content Include="Views\Artikli\Create.cshtml" />
     <Content Include="Views\Orders\Create.cshtml" />
     <Content Include="Views\Orders\Delete.cshtml" />
     <Content Include="Views\Orders\Edit.cshtml" />
@@ -613,6 +616,15 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Slike\Create.cshtml" />
+    <Content Include="Views\Slike\Delete.cshtml" />
+    <Content Include="Views\Slike\Details.cshtml" />
+    <Content Include="Views\Slike\Edit.cshtml" />
+    <Content Include="Views\Slike\Index.cshtml" />
+    <Content Include="Views\Artikli\Create.cshtml" />
+    <Content Include="Views\Artikli\Details.cshtml" />
+    <Content Include="Views\Artikli\Edit.cshtml" />
+    <Content Include="Views\Artikli\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
