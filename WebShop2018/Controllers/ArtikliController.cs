@@ -115,17 +115,6 @@ namespace WebShop2018.Controllers
             }
         }
 
-        public ActionResult PreviewPhoto(Proizvod proizvod, HttpPostedFileBase slika)
-        {
-            if (proizvod != null && slika != null)
-            {
-                string name = proizvod.Id + "_" + Guid.NewGuid() + "_" + slika.FileName;
-                var putanjaDoSlike = Server.MapPath($"~/Content/UploadedImages/{name}");
-                slika.SaveAs(putanjaDoSlike);
-            }
-            return (ViewBag.Title);
-        }
-
         [Authorize(Roles = RolesConfig.ADMIN)]
         public ActionResult Edit(int id)
         {
