@@ -1,0 +1,34 @@
+﻿@model WebShop2018.Models.Slika
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Slika</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NazivSlike)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NazivSlike)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OpisSlike)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OpisSlike)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
