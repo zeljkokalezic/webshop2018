@@ -19,7 +19,6 @@
 @if (User.IsInRole(RolesConfig.ADMIN))
 {
     @Html.ActionLink("Create New", "Create")
-    @*<input type="button" value="Slike svih proizvoda" onclick="location.href='@Url.Action("Index", "Slike")'" style="float:right; margin-bottom:10px;" />*@
     <div style="display:inline-block; margin-left:20px;">@Html.ActionLink("Slike svih proizvoda", "Index", "Slike")</div>
 }
 
@@ -83,8 +82,6 @@
                     @Html.Raw("<br/>")
                     @Html.ActionLink("Delete", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme" })
                     @Html.Raw("<br/>")
-                    //<input type="button" value="Dodaj slike" onclick="location.href='@Url.Action("Create", "Slike")'" id="viseSlika" />
-                    @*@Html.ActionLink("Details", "Details", new { id = proizvod.Id })*@
                 }
                 @if (User.IsInRole(RolesConfig.USER))
                 {

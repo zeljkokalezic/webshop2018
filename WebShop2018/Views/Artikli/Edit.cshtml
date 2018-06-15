@@ -74,7 +74,6 @@
                 }
             </td>
             <td>
-                @*@Html.ActionLink("Obrisi", "Delete", "Slike", new { id = slika.Id, proizvodId = Model.Id }, null)*@
                 @using (Html.BeginForm("ObrisiSliku", "Artikli", FormMethod.Post))
                 {
                     <input name="id" type="hidden" value="@slika.Id">
