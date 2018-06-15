@@ -28,23 +28,40 @@
                           )
     @Html.ValidationMessageFor(m => m.Kategorija)
 
+    <br />
+
     <div class="form-group">
-        <label class="control-label col-md-2">Dodaj sliku</label>
-        <div class="col-md-10">
+        <label class="control-label">Dodaj sliku</label>
+        <div>
             <input type="file" name="slika" accept=".jpg,.gif,.jpeg,.png" multiple />
         </div>
     </div>
-
     <br />
-    <input type="submit" value="Save" id="submitDugme" />
+
+    <div class="col-md-12" style="margin-bottom:50px;">
+        <input type="submit" value="Save" />
+    </div>
 }
+
+    <div class="container">
+        <div class="row">
+            @foreach (var slika in Model.Slike)
+            {
+                <div class="col-md-3">
+                    <div style="padding:50px;">
+                        <img src="@string.Format("/Content/Artikli/{0}", slika.NazivSlikeZaPrikaz)" style="width:100%;">
+                        <p style="text-align:center; margin-top:10px;">@Html.DisplayFor(s => slika.NazivSlike)</p>
+                        <input type="button" value="Obrisi" onclick="location.href='@Url.Action("Delete", "Slike", new { id = slika.Id })'" style="margin:20px 0; font-size:15px;" />
+                        <input type="button" value="Dodaj opis" onclick="location.href='@Url.Action("Edit", "Slike", new { id = slika.Id })'" style="margin:20px 0; font-size:15px; float:right;" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+
+<br />
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-                //$('#viseSlika').on('click', function () {
-                //    $('#submitDugme').trigger('click');
-                //});
-    </script>
-
 }

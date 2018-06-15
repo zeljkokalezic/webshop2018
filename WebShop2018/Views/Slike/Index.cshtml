@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebShop2018.Models.Proizvod>
+﻿@model IEnumerable<WebShop2018.Models.Slika>
 
 @{
     ViewBag.Title = "Index";
@@ -11,35 +11,29 @@
 </p>
 <table class="table">
     <tr>
+        <th></th>
         <th>
-            @Html.DisplayNameFor(model => model.Naziv)
+            @Html.DisplayNameFor(model => model.NazivSlike)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Cena)
+            @Html.DisplayNameFor(model => model.OpisSlike)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Kategorija)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Stanje)
-        </th>
+        <th>Naziv Proizvoda</th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Naziv)
+            <img src="@string.Format("/Content/Artikli/{0}", item.NazivSlikeZaPrikaz)" style="width:100px;">
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Cena)
+            @Html.DisplayFor(modelItem => item.NazivSlike)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Kategorija.Naziv)
+            @Html.DisplayFor(modelItem => item.OpisSlike)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Stanje)
-        </td>
+        <td>@Html.DisplayFor(modelItem => item.Proizvod.Naziv)</td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |

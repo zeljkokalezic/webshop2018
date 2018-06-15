@@ -248,10 +248,7 @@ namespace WebShop2018.Controllers
         {
             var orderLine = db.OrderLines.Find(id);
 
-            if (orderLine == null 
-                || orderLine.Order == null
-                || orderLine.Order.State != OrderState.Open
-                || OrderAcessNotAuthorized(orderLine.Order))
+            if (orderLine == null || orderLine.Order == null || OrderAcessNotAuthorized(orderLine.Order))
             {
                 return HttpNotFound();
             }
@@ -268,10 +265,7 @@ namespace WebShop2018.Controllers
         {
             var orderLine = db.OrderLines.Find(id);
 
-            if (orderLine == null
-                || orderLine.Order == null
-                || orderLine.Order.State != OrderState.Open
-                || OrderAcessNotAuthorized(orderLine.Order))
+            if (orderLine == null || orderLine.Order == null || OrderAcessNotAuthorized(orderLine.Order))
             {
                 return HttpNotFound();
             }

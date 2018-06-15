@@ -1,0 +1,52 @@
+﻿@using WebShop2018.Models
+@model WebShop2018.Models.Slika
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm((string)ViewBag.Title, "Slike", FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Slike</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Dodaj sliku</label>
+        <div class="col-md-10">
+            <input type="file" name="slika" accept=".jpg,.gif,.jpeg,.png" multiple/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Proizvod, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.Proizvod.Id, new SelectList(ViewBag.Proizvodi, "Id", "Naziv"))
+            @Html.ValidationMessageFor(m => m.Proizvod)
+        </div>
+    </div>
+
+    @*<div class="form-group">
+        @Html.LabelFor(model => model.OpisSlike, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.OpisSlike, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.OpisSlike, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

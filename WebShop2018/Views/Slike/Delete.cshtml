@@ -1,0 +1,40 @@
+﻿@model WebShop2018.Models.Slika
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Slika</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NazivSlike)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NazivSlike)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OpisSlike)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OpisSlike)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
