@@ -30,7 +30,7 @@ namespace WebShop2018
                     year = UrlParameter.Optional,
                     category = UrlParameter.Optional
                 }
-            );
+            );          
         }
     }
 }

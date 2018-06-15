@@ -20,9 +20,9 @@ namespace WebShop2018.Models
 
         public StanjeProizvoda Stanje { get; set; }
 
-        [Required(ErrorMessage = "Naziv mora da se navede")]
-        [StringLength(50)]
-        [DisplayName("Ime")]
+        //[Required(ErrorMessage = "Naziv mora da se navede")]
+        //[StringLength(50)]
+        //[DisplayName("Ime")]
         public string Naziv { get; set; }
 
         [DisplayName("Vrednost proizvoda")]
@@ -43,5 +43,6 @@ namespace WebShop2018.Models
 
         public virtual Kategorija Kategorija { get; set; }
         public virtual ICollection<Dobavljac> Dobavljaci { get; set; }
+        public virtual ICollection<Picture> Pictures{ get; set; }
     }
 }

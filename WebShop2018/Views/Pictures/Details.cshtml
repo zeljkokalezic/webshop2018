@@ -1,0 +1,50 @@
+﻿@model IEnumerable<WebShop2018.Models.Picture>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Details</h2>
+
+<p>
+    @*@if (User.IsInRole(RolesConfig.ADMIN))
+        {
+            @Html.ActionLink("Create New", "Create")
+        }*@
+    @*@Html.ActionLink("Create New", "Create")*@
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NazivSlike)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Opis)
+        </th>
+        <th>
+            Akcije
+        </th>
+    </tr>
+
+    @foreach (var picture in Model)
+    {
+        <tr>
+            <td>
+                <img src="@string.Format("/Content/Artikli/{0}", picture.NazivSlikeZaPrikaz)" style="width:100px;">
+                @*@Html.DisplayFor(modelItem => item.NazivSlike)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => picture.Opis)
+            </td>
+            <td>
+                @*@if (User.IsInRole(RolesConfig.ADMIN))
+                    stavi za edit i delete a details stavi za user-a pogledaj index od artikli da kopiras*@
+                @Html.ActionLink("Edit", "Edit", new { id = picture.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = picture.Id }) |
+                @*@Html.ActionLink("Details", "Details", new { id = picture.Id })*@ 
+                
+            </td>
+        </tr>
+    }
+
+</table>

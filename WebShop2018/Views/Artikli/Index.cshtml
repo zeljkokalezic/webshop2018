@@ -84,6 +84,10 @@
             @if (User.IsInRole(RolesConfig.USER))
             {
                 @Html.ActionLink("Dodaj u korpu", "AddToCart", new { id = proizvod.Id }, new { @class = "" })
+                @*@Html.Raw("<br/>")*@
+                @*@Html.ActionLink("Details", "Index", "Pictures", new { id = proizvod.Id }, new { @class = "" })*@
+                @*<a href="/Pictures/Index/" role="button">Details</a>*@
+                @*<button  role="button" onclick="window.location.href= '/Pictures/Index';">Go to Index</button>*@
             }
         </td>
     </tr>

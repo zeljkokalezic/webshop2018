@@ -29,6 +29,7 @@ namespace WebShop2018.Models
         public virtual DbSet<Proizvod> Proizvodi { get; set; }
         public virtual DbSet<Kategorija> Kategorije { get; set; }
         public virtual DbSet<Dobavljac> Dobavljaci { get; set; }
+        public virtual DbSet<Picture> Pictures { get; set; }
 
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderLine> OrderLines { get; set; }
