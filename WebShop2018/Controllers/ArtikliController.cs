@@ -240,5 +240,37 @@ namespace WebShop2018.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public ActionResult DodajOpis(int id, string opisSlike)
+        {
+            var slika = db.Slike.Find(id);
+
+            slika.OpisSlike = opisSlike;
+            db.SaveChanges();
+
+            var proizvodId = slika.Proizvod.Id;
+
+            return RedirectToAction("Edit", new { id = proizvodId });
+        }
+
+        public ActionResult ObrisiSliku(int id)
+        {
+            Slika slika = db.Slike.Find(id);
+
+            //brisemo najpre iz Content foldera
+            var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{slika.NazivSlikeZaPrikaz}");
+
+            if (System.IO.File.Exists(putanjaDoSlike))
+            {
+                System.IO.File.Delete(putanjaDoSlike);
+            }
+
+            var proizvodId = slika.Proizvod.Id;
+
+            db.Slike.Remove(slika);
+            db.SaveChanges();
+
+            return RedirectToAction("Edit", new { id = proizvodId });
+        }
     }
 }

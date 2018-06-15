@@ -124,7 +124,7 @@ namespace WebShop2018.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult DeleteConfirmed(int id, int? proizvodId)
+        public ActionResult DeleteConfirmed(int id)
         {
             Slika slika = db.Slike.Find(id);
 
@@ -139,14 +139,7 @@ namespace WebShop2018.Controllers
             db.Slike.Remove(slika);
             db.SaveChanges();
 
-            if (proizvodId.HasValue)
-            {
-                return RedirectToAction("Edit", "Artikli", new { id = proizvodId });
-            }
-            else
-            {
-                return RedirectToAction("Index");
-            }
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

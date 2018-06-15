@@ -56,21 +56,30 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model.Slike)
+    @foreach (var slika in Model.Slike)
     {
         <tr>
             <td>
-                <img src="@string.Format("/Content/Artikli/{0}", item.NazivSlikeZaPrikaz)" style="width:100px;">
+                <img src="@string.Format("/Content/Artikli/{0}", slika.NazivSlikeZaPrikaz)" style="width:100px;">
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NazivSlike)
+                @Html.DisplayFor(modelItem => slika.NazivSlike)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OpisSlike)
+                @using (Html.BeginForm("DodajOpis", "Artikli", FormMethod.Post))
+                {
+                    <input name="id" type="hidden" value="@slika.Id">
+                    <input name="opisSlike" type="text" value="@slika.OpisSlike" min="1">
+                    <input type="submit" value="Dodaj opis" class="btn btn-primary" />
+                }
             </td>
             <td>
-                @Html.ActionLink("Dodaj opis", "Edit", "Slike", new { id = item.Id, proizvodId = Model.Id }, null) |
-                @Html.ActionLink("Obrisi", "Delete", "Slike", new { id = item.Id, proizvodId = Model.Id }, null)
+                @*@Html.ActionLink("Obrisi", "Delete", "Slike", new { id = slika.Id, proizvodId = Model.Id }, null)*@
+                @using (Html.BeginForm("ObrisiSliku", "Artikli", FormMethod.Post))
+                {
+                    <input name="id" type="hidden" value="@slika.Id">
+                    <input type="submit" value="Obrisi" class="btn btn-danger" />
+                }
             </td>
         </tr>
     }

@@ -44,7 +44,9 @@
             @foreach (var slika in Model.Slike)
             {
                 <div class="col-md-3" style="margin-bottom:100px; text-align:center;">
-                    <img src="@string.Format("/Content/Artikli/{0}", slika.NazivSlikeZaPrikaz)" style="width:60%;">
+                    <a href="@string.Format("/Content/Artikli/{0}", slika.NazivSlikeZaPrikaz)" data-fancybox="gallery">
+                        <img src="@string.Format("/Content/Artikli/{0}", slika.NazivSlikeZaPrikaz)" style="width:60%;">
+                    </a>
                     <p style="margin-top:10px;">@Html.DisplayFor(s => slika.OpisSlike)</p>
                 </div>
             }
@@ -60,4 +62,12 @@
 
 
 @section Scripts{
+    <script>
+        //lightbox.option({
+        //    'resizeDuration': 300,
+        //    'fadeDuration': 300,
+        //    'wrapAround': true,
+        //    'leftArrow':true
+        //})
+    </script>
 }
