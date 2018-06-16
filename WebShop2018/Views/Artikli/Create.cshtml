@@ -1,9 +1,6 @@
 ﻿@model WebShop2018.Models.Proizvod
-
 <h2>@ViewBag.Title</h2>
-
 @Html.ActionLink("Back", "Index")
-
 @*moramo da stavimo encoding za formu da bi poslali slliku (enctype = "multipart/form-data")*@
 @using (Html.BeginForm((string)ViewBag.Title, "Artikli", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -24,18 +21,32 @@
     <br />
     @Html.LabelFor(m => m.Kategorija)
     @Html.DropDownListFor(m => m.Kategorija.Id,
-                            new SelectList(ViewBag.Kategorije, "Id", "Naziv")
-                          )
+                                                new SelectList(ViewBag.Kategorije, "Id", "Naziv")
+                                              )
     @Html.ValidationMessageFor(m => m.Kategorija)
 
     <br />
     <label>Slika</label>
-    <input name="slika" type="file"accept=".jpg,.gif,.jpeg,.png"/>
+    <input name="slika" type="file" accept=" jpg,.gif,.jpeg,.png" multiple="multiple" />
+
+    if (ViewBag.Title == "Edit")
+    {
+        foreach (var slika in Model.Slike)
+        {
+            <img src="@string.Format("/Content/Artikli/{0}", slika.Naziv)" style="width:100px;">
+            @Html.ActionLink("Delete", "ObrisiSliku", new { id = Model.Id, idSlike = slika.Id }, new { @class = "delete-dugme" })
+        }
+    }
+
 
     <br />
-    <input type="submit" value="Save"/>
+    <input type="submit" value="Save" />
 }
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        // za sve slike primeni ovaj imgzoom
+        $("img").elevateZoom();
+    </script>
 }
