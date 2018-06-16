@@ -13,7 +13,7 @@ namespace WebShop2018.Models
         Akcija,
         Rasprodato
     }
-
+    
     public class Proizvod
     {
         public int Id { get; set; }
@@ -30,7 +30,7 @@ namespace WebShop2018.Models
         public decimal Cena { get; set; }
 
         public string ImeSlike { get; set; }
-
+        
         public string ImeSlikeZaPrikaz
         {
             get
@@ -39,9 +39,9 @@ namespace WebShop2018.Models
                 return string.IsNullOrWhiteSpace(ImeSlike) ? "no_image.png" : string.Format("{0}{1}", Id, ImeSlike);
             }
         }
-
-
+        
         public virtual Kategorija Kategorija { get; set; }
         public virtual ICollection<Dobavljac> Dobavljaci { get; set; }
+        public virtual ICollection<Slike> Slike { get; set; }
     }
 }

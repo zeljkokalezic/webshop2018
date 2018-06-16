@@ -76,15 +76,17 @@
         </td>
         <td>
             @if (Request.IsAuthenticated && User.IsInRole(RolesConfig.ADMIN))
-            {
-                @Html.ActionLink("Edit", "Edit", new { id = proizvod.Id }, new { @class = "" })
-                @Html.Raw("<br/>")
-                @Html.ActionLink("Delete", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme" })
-            }
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = proizvod.Id }, new { @class = "" })
+        @Html.Raw("<br/>")
+        @Html.ActionLink("Delete", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme" })
+        @Html.Raw("<br/>")
+        @Html.ActionLink("Details", "Details", new { id = proizvod.Id }, new { @class = "details-dugme" })
+}
             @if (User.IsInRole(RolesConfig.USER))
-            {
-                @Html.ActionLink("Dodaj u korpu", "AddToCart", new { id = proizvod.Id }, new { @class = "" })
-            }
+    {
+        @Html.ActionLink("Dodaj u korpu", "AddToCart", new { id = proizvod.Id }, new { @class = "" })
+}
         </td>
     </tr>
 }
