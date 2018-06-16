@@ -75,6 +75,8 @@ namespace WebShop2018.Controllers
                 db.Proizvodi.Add(proizvodIzForme);
                 db.SaveChanges();
 
+                proizvodIzForme.Slike = new List<Slika>();
+
                 SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slika);
 
                 // drugi save changes nam snima ime slike
