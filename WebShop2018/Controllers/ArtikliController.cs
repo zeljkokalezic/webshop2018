@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using WebShop2018.Models;
 using System.Linq.Dynamic;
 using System.IO;
+using System.Net;
 
 namespace WebShop2018.Controllers
 {
@@ -96,9 +97,18 @@ namespace WebShop2018.Controllers
             {
                 proizvod.ImeSlike = Path.GetFileName(slika.FileName);
 
+                Slike slikaProizvoda = new Slike
+                {
+                    Naziv = proizvod.ImeSlikeZaPrikaz,
+                    Proizvod = proizvod
+                };
+                db.Slike.Add(slikaProizvoda);
+                db.SaveChanges();
+
                 var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvod.ImeSlikeZaPrikaz}");
+
                 slika.SaveAs(putanjaDoSlike);
-                
+
             }
         }
 
@@ -179,7 +189,7 @@ namespace WebShop2018.Controllers
         {
             var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
             var item = db.Proizvodi.Find(id);
-            
+
             // trazimo otvorenu narudzbenicu
             var order = db.Orders.FirstOrDefault(o => o.State == OrderState.Open && o.User.Id == currentUser.Id);
 
@@ -217,6 +227,50 @@ namespace WebShop2018.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Details(int id)
+        {
+            var proizvodIzBaze = db.Proizvodi.Find(id);
+
+            if (proizvodIzBaze == null)
+            {
+                return HttpNotFound();
+            }
+            return View(proizvodIzBaze);
+        }
+
+        public ActionResult DeleteImage(int id, int idslike)
+        {
+            var proizvod = db.Proizvodi.Find(id);
+            var slika = db.Slike.Find(idslike);
+            if (slika != null)
+            {
+                db.Slike.Remove(slika);
+                db.SaveChanges();
+                var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{slika.Naziv}");
+                if (System.IO.File.Exists(putanjaDoSlike))
+                {
+                    System.IO.File.Delete(putanjaDoSlike);
+                }
+            }
+            return RedirectToAction("Edit", proizvod);
+
+        }
+
+        public ActionResult PromeniOpis(int id, string opis)
+        {
+            var slika = db.Slike.Find(id);
+
+            if (slika != null)
+            {
+                slika.Opis = opis;
+                db.SaveChanges();
+
+                return RedirectToAction("Edit", new { id = slika.Proizvod.Id });
+            }
+
+            return HttpNotFound();
         }
     }
 }
