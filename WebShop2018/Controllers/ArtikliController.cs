@@ -163,8 +163,11 @@ namespace WebShop2018.Controllers
         {
             var proizvodIzBaze = db.Proizvodi.Find(id);
 
-            //var orderLinesForDelete = db.OrderLines.Where(ol => ol.Item.Id == proizvodIzBaze.Id);
-            //db.OrderLines.RemoveRange(orderLinesForDelete);
+            var orderLinesForDelete = db.OrderLines.Where(ol => ol.Item.Id == proizvodIzBaze.Id);
+            db.OrderLines.RemoveRange(orderLinesForDelete);
+
+            var picturesForDelete = db.Slike.Where(s => s.proizvod.Id == proizvodIzBaze.Id);
+            db.Slike.RemoveRange(picturesForDelete);
 
             db.Proizvodi.Remove(proizvodIzBaze);
 
@@ -229,6 +232,34 @@ namespace WebShop2018.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+        public ActionResult ObrisiSliku(int id, int idSlike)
+        {
+            var proizvod = db.Proizvodi.Find(id);
+            var slika = db.Slike.Find(idSlike);
+            if (slika != null)
+            {
+                db.Slike.Remove(slika);
+                db.SaveChanges();
+                var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{slika.Naziv}");
+                if (System.IO.File.Exists(putanjaDoSlike))
+                {
+                    System.IO.File.Delete(putanjaDoSlike);
+                }
+            
+            }
+            return RedirectToAction("Edit", proizvod);
+            
+        }
+        public ActionResult Details(int id)
+        {
+            var proizvodIzBaze = db.Proizvodi.Find(id);
+
+            if (proizvodIzBaze == null)
+            {
+                return HttpNotFound();
+            }
+            return View(proizvodIzBaze);
         }
     }
 }

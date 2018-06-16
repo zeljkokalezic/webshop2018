@@ -1,0 +1,40 @@
+﻿@model WebShop2018.Models.Proizvod
+
+@Html.ActionLink("Back", "Index")
+
+@{
+    //Layout = null;
+}
+@{
+    ViewBag.Title = "Details";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Galerija</title>
+</head>
+<body>
+    <div>
+        @if (Model.Slike != null)
+        {
+            foreach (var slika in Model.Slike)
+            {
+                <img src="@string.Format("/Content/Artikli/{0}", slika.Naziv)" style="width:500px;">
+
+            }
+        }
+
+
+    </div>
+</body>
+
+</html>
+
+@section Scripts{
+    <script>
+        // za sve slike primeni ovaj imgzoom
+        $("img").elevateZoom();
+    </script>
+}
