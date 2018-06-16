@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using WebShop2018.Models;
 using System.Linq.Dynamic;
 using System.IO;
+using System.Net;
 
 namespace WebShop2018.Controllers
 {
@@ -92,13 +93,22 @@ namespace WebShop2018.Controllers
 
         private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, HttpPostedFileBase slika)
         {
+
             if (slika != null)
             {
                 proizvod.ImeSlike = Path.GetFileName(slika.FileName);
 
+                Slike slikaProizvoda = new Slike
+                {
+                    Naziv = proizvod.ImeSlikeZaPrikaz,
+                    Proizvod = proizvod
+
+                };
+                db.Slike.Add(slikaProizvoda);
+                db.SaveChanges();
                 var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvod.ImeSlikeZaPrikaz}");
                 slika.SaveAs(putanjaDoSlike);
-                
+
             }
         }
 
@@ -179,7 +189,7 @@ namespace WebShop2018.Controllers
         {
             var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
             var item = db.Proizvodi.Find(id);
-            
+
             // trazimo otvorenu narudzbenicu
             var order = db.Orders.FirstOrDefault(o => o.State == OrderState.Open && o.User.Id == currentUser.Id);
 
@@ -217,6 +227,60 @@ namespace WebShop2018.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+        public ActionResult Details(int id)
+        {
+            var proizvodIzBaze = db.Proizvodi.Find(id);
+
+            if (proizvodIzBaze == null)
+            {
+                return HttpNotFound();
+            }
+            return View(proizvodIzBaze);
+
+        }
+        public ActionResult ObrisiSliku(int id, int idslike)
+        {
+            var proizvodIzBaze = db.Proizvodi.Find(id);
+            var slikaZaBrisanje = db.Slike.Find(idslike);
+            if (slikaZaBrisanje != null)
+            {
+                db.Slike.Remove(slikaZaBrisanje);
+                db.SaveChanges();
+
+                var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvodIzBaze.ImeSlikeZaPrikaz}");
+                if (System.IO.File.Exists(putanjaDoSlike))
+                {
+                    System.IO.File.Delete(putanjaDoSlike);
+                }
+            }
+            return RedirectToAction("Edit", proizvodIzBaze);
+        }
+
+        public ActionResult DodajOpis(int id, string opis)
+        {
+
+            var slika = db.Slike.Find(id);
+
+            if (slika != null)
+            {
+                slika.Opis = opis;
+            }
+            return View();
+        }
+
+        public ActionResult NoviOpis(int id, string opis)
+        {
+            var slika = db.Slike.Find(id);
+            if (slika != null)
+            {
+                slika.Opis = opis;
+                db.SaveChanges();
+
+                return RedirectToAction("Edit", new { id = slika.Proizvod.Id });
+            }
+
+            return HttpNotFound();
         }
     }
 }

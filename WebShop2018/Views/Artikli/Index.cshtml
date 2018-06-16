@@ -80,6 +80,8 @@
                 @Html.ActionLink("Edit", "Edit", new { id = proizvod.Id }, new { @class = "" })
                 @Html.Raw("<br/>")
                 @Html.ActionLink("Delete", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme" })
+                @Html.Raw("<br/>")
+                @Html.ActionLink("Details", "Details", new { id = proizvod.Id }, new { @class = "details-dugme" })
             }
             @if (User.IsInRole(RolesConfig.USER))
             {

@@ -1,0 +1,19 @@
+﻿@model WebShop2018.Models.Proizvod
+
+@Html.ActionLink("Back", "Index")
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+
+@if (Model.Slike != null)
+{
+    foreach (var slika in Model.Slike)
+    {
+        <img src="@string.Format("/Content/Artikli/{0}", slika.Naziv)" style="width:100px;">
+        <label>Opis: @slika.Opis</label>
+        <br />
+    }
+}
