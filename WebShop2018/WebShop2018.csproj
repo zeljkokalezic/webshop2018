@@ -27,6 +27,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.1</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -211,6 +212,7 @@
     <Compile Include="Controllers\OnlineDobavljacsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProizvodiController.cs" />
+    <Compile Include="Controllers\SlikesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -234,6 +236,10 @@
     <Compile Include="Migrations\201805071719503_Nasledjivanje.Designer.cs">
       <DependentUpon>201805071719503_Nasledjivanje.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806112053492_1toN.cs" />
+    <Compile Include="Migrations\201806112053492_1toN.Designer.cs">
+      <DependentUpon>201806112053492_1toN.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BaseGridViewModel.cs" />
@@ -247,6 +253,8 @@
     <Compile Include="Models\OrderLine.cs" />
     <Compile Include="Models\Proizvod.cs" />
     <Compile Include="Models\RolesConfig.cs" />
+    <Compile Include="Models\Slike.cs" />
+    <Compile Include="Models\SlikeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -613,6 +621,12 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Slikes\Create.cshtml" />
+    <Content Include="Views\Slikes\Delete.cshtml" />
+    <Content Include="Views\Slikes\Details.cshtml" />
+    <Content Include="Views\Slikes\Edit.cshtml" />
+    <Content Include="Views\Slikes\Index.cshtml" />
+    <Content Include="Views\Artikli\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -636,6 +650,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805071719503_Nasledjivanje.resx">
       <DependentUpon>201805071719503_Nasledjivanje.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806112053492_1toN.resx">
+      <DependentUpon>201806112053492_1toN.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

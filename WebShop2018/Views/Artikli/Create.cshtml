@@ -23,18 +23,38 @@
 
     <br />
     @Html.LabelFor(m => m.Kategorija)
-    @Html.DropDownListFor(m => m.Kategorija.Id,
-                            new SelectList(ViewBag.Kategorije, "Id", "Naziv")
-                          )
+    @Html.DropDownListFor(m => m.Kategorija.Id, new SelectList(ViewBag.Kategorije, "Id", "Naziv"))
     @Html.ValidationMessageFor(m => m.Kategorija)
+    <br />
+    <input type="submit" value="Save" />
+
 
     <br />
-    <label>Slika</label>
-    <input name="slika" type="file"accept=".jpg,.gif,.jpeg,.png"/>
-
+    <label>Dodajte sliku:</label>
+    <input name="slika" type="file" accept=".jpg,.gif,.jpeg,.png" />
     <br />
-    <input type="submit" value="Save"/>
+
 }
+
+@if (ViewBag.Title == "Edit" && Model.Slike != null)
+{
+    <h2> Galerija: </h2>
+    foreach (var slika in Model.Slike)
+    {
+        <img src="@string.Format("/Content/Artikli/{0}", slika.Naziv)" style="width:100px;">
+        using (Html.BeginForm("PromeniOpis", "Artikli", FormMethod.Post))
+        {
+            <input name="id" type="hidden" value="@slika.Id">
+            <input name="opis" type="text" value="@slika.Opis">
+            <input type="submit" value="Change" class="btn" />
+        }
+
+        @Html.ActionLink("Delete", "DeleteImage", new { id = Model.Id, idSlike = slika.Id })
+        <br />
+    }
+}
+
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
