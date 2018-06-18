@@ -76,7 +76,7 @@ namespace WebShop2018.Controllers
                 db.Proizvodi.Add(proizvodIzForme);
                 db.SaveChanges();
 
-                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme,slika);
+                SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slika);
 
                 // drugi save changes nam snima ime slike
                 db.SaveChanges();
@@ -98,7 +98,7 @@ namespace WebShop2018.Controllers
                 foreach (var picture in slika)
                 {
                     {
-                        if (picture.ContentLength > 0)
+                        if (picture!= null)
                         {
 
                             var samePicture = db.Pictures.FirstOrDefault(p => p.Naziv == picture.FileName && p.Proizvod.Id == proizvodSlika.Id);
@@ -107,18 +107,18 @@ namespace WebShop2018.Controllers
                             {
 
 
-                                db.Pictures.Add(new Pictures()
-                                { Naziv = picture.FileName, Proizvod = proizvodSlika});
+                                db.Pictures.Add(new Picture()
+                                { Naziv = picture.FileName, Proizvod = proizvodSlika });
 
                                 var putanjaDoSlike = Server.MapPath(string.Format("~/Content/GalerijaFolder/{0}{1}", proizvodSlika.Id, picture.FileName));
                                 picture.SaveAs(putanjaDoSlike);
-                                
+
                             }
 
 
                         }
 
-                        
+
                     }
                 }
 
@@ -127,12 +127,12 @@ namespace WebShop2018.Controllers
 
                 //var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvod.ImeSlikeZaPrikaz}");
                 //slika.SaveAs(putanjaDoSlike);
-                
+
             }
         }
 
 
-          // GET: Proizvodi/Details/5
+
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -160,12 +160,12 @@ namespace WebShop2018.Controllers
 
             ViewBag.Title = "Edit";
             PostaviKategorije();
-            return View("Create", proizvodIzBaze);
+            return View("Edit", proizvodIzBaze);
         }
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Edit(Proizvod proizvodIzForme,IEnumerable<HttpPostedFileBase> slika)
+        public ActionResult Edit(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slika)
         {
             if (ModelState.IsValid)
             {
@@ -187,31 +187,31 @@ namespace WebShop2018.Controllers
 
             ViewBag.Title = "Edit";
             PostaviKategorije();
-            return View("Create", proizvodIzForme);
+            return View("Edit", proizvodIzForme);
         }
 
         [Authorize(Roles = RolesConfig.ADMIN)]
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            var proizvodIzBaze = db.Proizvodi.Find(id);
+            var proizvodIzBaze = db.Proizvodi.Find(id); //nadjemo proizvod iz baze
+            var proizvodPic = proizvodIzBaze.Pictures.ToList();  // izvucemo sve slike vezane za dati proizvod
 
-            //var orderLinesForDelete = db.OrderLines.Where(ol => ol.Item.Id == proizvodIzBaze.Id);
-            //db.OrderLines.RemoveRange(orderLinesForDelete);
+            foreach (var pic in proizvodPic)
+            {
+                db.Pictures.Remove(pic);
+            }
+
 
             db.Proizvodi.Remove(proizvodIzBaze);
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                // logujemo exception ili tako nesto
-                return new HttpStatusCodeResult(500);
-            }
 
-            return new HttpStatusCodeResult(200);
+            db.SaveChanges();
+
+
+
+
+            return RedirectToAction("Index");
         }
 
         public void PostaviKategorije()
@@ -224,7 +224,7 @@ namespace WebShop2018.Controllers
         {
             var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
             var item = db.Proizvodi.Find(id);
-            
+
             // trazimo otvorenu narudzbenicu
             var order = db.Orders.FirstOrDefault(o => o.State == OrderState.Open && o.User.Id == currentUser.Id);
 

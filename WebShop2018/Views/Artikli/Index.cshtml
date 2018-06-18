@@ -75,6 +75,7 @@
             @Html.DisplayFor(p => proizvod.Kategorija.Naziv)
         </td>
         <td>
+            @Html.ActionLink("Details", "Details", new { id = proizvod.Id }, new { @class = "" })
             @if (Request.IsAuthenticated && User.IsInRole(RolesConfig.ADMIN))
             {
                 @Html.ActionLink("Edit", "Edit", new { id = proizvod.Id }, new { @class = "" })

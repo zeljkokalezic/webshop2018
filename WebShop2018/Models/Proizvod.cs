@@ -31,7 +31,7 @@ namespace WebShop2018.Models
 
         public string ImeSlike { get; set; }
 
-        public virtual ICollection<Pictures> Pictures { get; set; }
+        public virtual ICollection<Picture> Pictures { get; set; }
 
         public string ImeSlikeZaPrikaz
         {

@@ -1,0 +1,67 @@
+﻿@model WebShop2018.Models.Proizvod
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Proizvod</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Stanje)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Stanje)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Naziv)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Naziv)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cena)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cena)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImeSlike)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImeSlike)
+        </dd>
+
+    </dl>
+</div>
+
+
+<div>
+
+    @foreach (var images in Model.Pictures)
+    {
+        < img src = "~/Content/GalerijaFolder/@images.Naziv" height = "150" />
+        if (images.Opis != null)
+        {
+            @Html.DisplayText(images.Opis)
+        }
+        < br />
+    }
+
+</div>
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
