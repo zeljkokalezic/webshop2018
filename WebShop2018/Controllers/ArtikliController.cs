@@ -66,7 +66,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Create(Proizvod proizvodIzForme, HttpPostedFileBase slika)
+        public ActionResult Create(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slika)
         {
             if (ModelState.IsValid)
             {
@@ -75,6 +75,7 @@ namespace WebShop2018.Controllers
                 db.Proizvodi.Add(proizvodIzForme);
                 db.SaveChanges();
 
+                proizvodIzForme.Slike = new List<Slika>();
                 SnimiSlikuIDodeliImeSlikeProizvodu(proizvodIzForme, slika);
 
                 // drugi save changes nam snima ime slike
@@ -90,16 +91,28 @@ namespace WebShop2018.Controllers
             return View(proizvodIzForme);
         }
 
-        private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, HttpPostedFileBase slika)
+        private void SnimiSlikuIDodeliImeSlikeProizvodu(Proizvod proizvod, IEnumerable<HttpPostedFileBase> slike)
         {
-            if (slika != null)
+            foreach(var slika in slike)
             {
-                proizvod.ImeSlike = Path.GetFileName(slika.FileName);
+                if (slika != null)
+                {
+                    var dodata = new Slika
+                    {
+                        Naziv = slika.FileName
+                    };
 
-                var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{proizvod.ImeSlikeZaPrikaz}");
-                slika.SaveAs(putanjaDoSlike);
-                
+                    proizvod.Slike.Add(dodata);
+
+                    db.Slike.Add(dodata);
+
+                    var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{dodata.Naziv}");
+                    slika.SaveAs(putanjaDoSlike);
+                    db.SaveChanges();
+
+                }
             }
+            
         }
 
         [Authorize(Roles = RolesConfig.ADMIN)]
@@ -120,7 +133,7 @@ namespace WebShop2018.Controllers
 
         [HttpPost]
         [Authorize(Roles = RolesConfig.ADMIN)]
-        public ActionResult Edit(Proizvod proizvodIzForme, HttpPostedFileBase slika)
+        public ActionResult Edit(Proizvod proizvodIzForme, IEnumerable<HttpPostedFileBase> slika)
         {
             if (ModelState.IsValid)
             {
@@ -151,8 +164,11 @@ namespace WebShop2018.Controllers
         {
             var proizvodIzBaze = db.Proizvodi.Find(id);
 
-            //var orderLinesForDelete = db.OrderLines.Where(ol => ol.Item.Id == proizvodIzBaze.Id);
-            //db.OrderLines.RemoveRange(orderLinesForDelete);
+            var orderLinesForDelete = db.OrderLines.Where(ol => ol.Item.Id == proizvodIzBaze.Id);
+            db.OrderLines.RemoveRange(orderLinesForDelete);
+            
+            var picturesForDelete = db.Slike.Where(s => s.proizvod.Id == proizvodIzBaze.Id);
+            db.Slike.RemoveRange(picturesForDelete);
 
             db.Proizvodi.Remove(proizvodIzBaze);
 
@@ -217,6 +233,35 @@ namespace WebShop2018.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult ObrisiSliku(int id, int idSlike)
+       {
+           var proizvod = db.Proizvodi.Find(id);
+            var slika = db.Slike.Find(idSlike);
+            if (slika != null)
+            {
+                db.Slike.Remove(slika);
+                db.SaveChanges();
+                var putanjaDoSlike = Server.MapPath($"~/Content/Artikli/{slika.Naziv}");
+                if (System.IO.File.Exists(putanjaDoSlike))
+                {
+                    System.IO.File.Delete(putanjaDoSlike);
+                }
+            
+            }
+            return RedirectToAction("Edit", proizvod);
+            
+        }
+        public ActionResult Details(int id)
+        {
+            var proizvodIzBaze = db.Proizvodi.Find(id);
+
+            if (proizvodIzBaze == null)
+            {
+                return HttpNotFound();
+            }
+            return View(proizvodIzBaze);
         }
     }
 }
