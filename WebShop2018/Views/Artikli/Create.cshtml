@@ -22,17 +22,17 @@
     <br />
     @Html.LabelFor(m => m.Kategorija)
     @Html.DropDownListFor(m => m.Kategorija.Id,
-                                                        new SelectList(ViewBag.Kategorije, "Id", "Naziv")
-                                                      )
+                                                            new SelectList(ViewBag.Kategorije, "Id", "Naziv")
+                                                          )
     @Html.ValidationMessageFor(m => m.Kategorija)
     <br />
     <input type="submit" value="Save" />
-}
+
 <br />
 <label>Dodajte sliku:</label>
 <input name="slika" type="file" accept=".jpg,.gif,.jpeg,.png" />
 <br />
-
+}
 @if (ViewBag.Title == "Edit" && Model.Slike != null)
 {
     <h2> Galerija: </h2>
