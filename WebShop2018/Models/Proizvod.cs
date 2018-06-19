@@ -40,8 +40,8 @@ namespace WebShop2018.Models
             }
         }
 
-
         public virtual Kategorija Kategorija { get; set; }
         public virtual ICollection<Dobavljac> Dobavljaci { get; set; }
+        public virtual ICollection<Slike> Slike { get; set; }
     }
 }

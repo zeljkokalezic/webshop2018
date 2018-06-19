@@ -1,12 +1,13 @@
 ﻿@using WebShop2018.Models
+
 @model WebShop2018.Models.ArtikliGridViewModel
 
 @{
-    ViewBag.Title = "View";
+                /**/
+
+                ViewBag.Title = "View";
 }
-
 <h2>Ukupno proizvoda: @Model.Count</h2>
-
 @using (Html.BeginForm())
 {
     <p>
@@ -15,12 +16,10 @@
         <input type="submit" value="Search" />
     </p>
 }
-
 @if (User.IsInRole(RolesConfig.ADMIN))
 {
     @Html.ActionLink("Create New", "Create")
 }
-
 @if (User.IsInRole(RolesConfig.USER) && Model.Order != null)
 {
     @Html.Raw($"<b>Narucili ste {Model.Order.TotalItems} artikla. Vas total je: {Model.Order.Total} </b>")
@@ -32,8 +31,6 @@
         </p>
     }
 }
-
-
 
 <table class="table">
     <tr>
@@ -56,46 +53,45 @@
             Akcije
         </th>
     </tr>
-@foreach (var proizvod in Model.Artikli)
-{
-    <tr>
-        <td>
-            <img src="@string.Format("/Content/Artikli/{0}", proizvod.ImeSlikeZaPrikaz)" style="width:100px;">
-        </td>
-        <td>
-            @proizvod.Naziv
-        </td>
-        <td>
-            @proizvod.Cena
-        </td>
-        <td>
-            @proizvod.Stanje
-        </td>
-        <td>
-            @Html.DisplayFor(p => proizvod.Kategorija.Naziv)
-        </td>
-        <td>
-            @if (Request.IsAuthenticated && User.IsInRole(RolesConfig.ADMIN))
-            {
-                @Html.ActionLink("Edit", "Edit", new { id = proizvod.Id }, new { @class = "" })
-                @Html.Raw("<br/>")
-                @Html.ActionLink("Delete", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme" })
-            }
-            @if (User.IsInRole(RolesConfig.USER))
-            {
-                @Html.ActionLink("Dodaj u korpu", "AddToCart", new { id = proizvod.Id }, new { @class = "" })
-            }
-        </td>
-    </tr>
-}
+    @foreach (var proizvod in Model.Artikli)
+    {
+        <tr>
+            <td>
+                <img src="@string.Format("/Content/Artikli/{0}", proizvod.ImeSlikeZaPrikaz)" style="width:100px;">
+            </td>
+            <td>
+                @proizvod.Naziv
+            </td>
+            <td>
+                @proizvod.Cena
+            </td>
+            <td>
+                @proizvod.Stanje
+            </td>
+            <td>
+                @Html.DisplayFor(p => proizvod.Kategorija.Naziv)
+            </td>
+            <td>
+                @if (Request.IsAuthenticated && User.IsInRole(RolesConfig.ADMIN))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = proizvod.Id }, new { @class = "" })
+                    @Html.Raw("<br/>")
+                    @Html.ActionLink("Delete", "Delete", new { id = proizvod.Id }, new { @class = "delete-dugme" })
+                    @Html.Raw("<br/>")
+                    @Html.ActionLink("Details", "Details", new { id = proizvod.Id }, new { @class = "details-dugme" })
+                }
+                @if (User.IsInRole(RolesConfig.USER))
+                {
+                    @Html.ActionLink("Dodaj u korpu", "AddToCart", new { id = proizvod.Id }, new { @class = "" })
+                }
+            </td>
+        </tr>
+    }
 </table>
-
 @Html.Partial("_GridPager", Model)
-
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -109,10 +105,8 @@
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
-
     </div>
 </div>
-
 @section Scripts{
     <script>
         // jQuery
@@ -133,7 +127,7 @@
                         $("#myModal").modal("show");
                     }
                 });
-                
+
             }
             return false;
         });
