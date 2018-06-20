@@ -1,0 +1,24 @@
+﻿@model WebShop2018.Controllers.Item
+@{
+    ViewBag.Title = "Test";
+}
+
+<h2>Test</h2>
+<h3>@ViewBag.Test</h3>
+
+@using (Html.BeginForm("Create", "Test", FormMethod.Post))
+{
+<div>
+    @Html.LabelFor(model => model.AvailableColours)
+    <br />
+    @for (var i = 0; i < Model.AvailableColours.Count; i++)
+    {
+
+        @Html.HiddenFor(m => Model.AvailableColours[i].ID)
+        @Html.CheckBoxFor(m => Model.AvailableColours[i].Checked)
+        @Html.TextBoxFor(m => Model.AvailableColours[i].Description)
+        <br />
+    }
+</div>
+    <input type="submit" value="Submit" />
+}
