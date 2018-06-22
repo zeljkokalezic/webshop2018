@@ -259,3 +259,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/WebShop2018/Content/GalerijaFolder/5Jellyfish.jpg
+/WebShop2018/Content/GalerijaFolder/5Hydrangeas.jpg
+/WebShop2018/Content/GalerijaFolder/5Desert.jpg
+/WebShop2018/Content/GalerijaFolder

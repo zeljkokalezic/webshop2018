@@ -34,29 +34,27 @@
             @Html.DisplayFor(model => model.Cena)
         </dd>
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.ImeSlike)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.ImeSlike)
-        </dd>
+        </dd>*@
 
     </dl>
 </div>
 
 
 <div>
-
-    @foreach (var images in Model.Pictures)
-    {
-        < img src = "~/Content/GalerijaFolder/@images.Naziv" height = "150" />
-        if (images.Opis != null)
+        @foreach (var images in Model.Pictures)
         {
-            @Html.DisplayText(images.Opis)
+            <img src="@Url.Content(String.Format("~/Content/GalerijaFolder/{0}", images.ImePrikazaneSlike))" />
         }
-        < br />
-    }
+
+
+    <br />
+
 
 </div>
 
