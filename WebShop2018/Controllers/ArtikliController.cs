@@ -168,6 +168,13 @@ namespace WebShop2018.Controllers
 
             //var orderLinesForDelete = db.OrderLines.Where(ol => ol.Item.Id == proizvodIzBaze.Id);
             //db.OrderLines.RemoveRange(orderLinesForDelete);
+            
+           
+            foreach (var photo in proizvodIzBaze.Photos)
+            {
+                    System.IO.File.Delete(Server.MapPath($"~/Content/Artikli/{photo.Naziv}"));
+            }
+            proizvodIzBaze.Photos.Clear();
 
             db.Proizvodi.Remove(proizvodIzBaze);
 

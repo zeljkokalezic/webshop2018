@@ -636,7 +636,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Artikli\" />
-    <Folder Include="Content\UploadedImages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
